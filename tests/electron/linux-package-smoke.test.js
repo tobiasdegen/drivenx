@@ -1,0 +1,110 @@
+'use strict';
+const ELECTRON_SOURCE_DIR = require('node:path').resolve(__dirname, '../../electron');
+
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { checkLinuxPackage, REQUIRED_ASAR } = require('../../scripts/smoke-linux-package.js');
+const { version: APP_VERSION } = require('../../package.json');
+
+function fixture(testCase) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'drivenx-linux-test-'));
+  testCase.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify({ version: APP_VERSION }));
+  const release = path.join(root, 'release');
+  const resources = path.join(release, 'linux-unpacked', 'resources');
+  fs.mkdirSync(resources, { recursive: true });
+  const files = [
+    'app.asar',
+    'smartmontools/drivedb.h',
+    'smartmontools/COPYING-smartmontools.txt',
+    'usb-ids/index.json',
+    'usb-ids/LICENSE-BSD-3-Clause.txt',
+    'LICENSE.md',
+    'DISCLAIMER.md',
+    'DISCLAIMER.en.md',
+    'LICENSE-THIRD-PARTY.md',
+    'licenses/Electron-MIT.txt',
+    'licenses/Lucide-ISC-and-Feather-MIT.txt',
+    'icon.png',
+    'linux-privileged/drivenx-smartctl-helper',
+    'linux-privileged/io.drivenx.smartctl.policy',
+  ];
+  for (const name of files) {
+    const file = path.join(resources, name);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, 'test');
+  }
+  fs.writeFileSync(path.join(release, 'linux-unpacked', 'LICENSES.chromium.html'), 'test');
+  const asarApi = { listPackage: () => REQUIRED_ASAR };
+  return { root, resources, asarApi };
+}
+
+test('Linux directory package includes all runtime notices but no other OS binaries', (t) => {
+  const { root, asarApi } = fixture(t);
+  assert.deepEqual(checkLinuxPackage({ root, target: 'dir', asarApi }), []);
+});
+
+test('Linux package refuses foreign macOS/Windows smartctl and usb.ids', (t) => {
+  const { root, asarApi, resources } = fixture(t);
+  for (const name of ['smartmontools/win32', 'smartmontools/darwin', 'usb-ids/usb.ids']) {
+    const file = path.join(resources, name);
+    fs.mkdirSync(name.endsWith('.ids') ? path.dirname(file) : file, { recursive: true });
+    if (name.endsWith('.ids')) fs.writeFileSync(file, 'test');
+  }
+  const problems = checkLinuxPackage({ root, target: 'dir', asarApi });
+  assert.equal(problems.length, 3);
+});
+
+test('Linux artifacts required for full release', (t) => {
+  const { root, asarApi } = fixture(t);
+  const problems = checkLinuxPackage({ root, target: 'all', asarApi });
+  assert.ok(problems.some((problem) => problem.includes('.AppImage')));
+  assert.ok(problems.some((problem) => problem.includes('.deb')));
+});
+
+test('DEB installer installs and removes the restricted helper, with dependencies', () => {
+  const project = path.join(ELECTRON_SOURCE_DIR, '..');
+  const configuration = require('../../package.json').build;
+  assert.equal(configuration.deb.afterInstall, 'scripts/linux-deb-after-install.sh');
+  assert.equal(configuration.deb.afterRemove, 'scripts/linux-deb-after-remove.sh');
+  assert.ok(configuration.deb.depends.includes('pkexec'));
+  assert.ok(configuration.deb.depends.includes('python3'));
+  for (const file of [configuration.deb.afterInstall, configuration.deb.afterRemove]) {
+    assert.ok(fs.existsSync(path.join(project, file)));
+  }
+});
+
+test('Linux smoke check rejects unknown package targets', (t) => {
+  const { root, asarApi } = fixture(t);
+  assert.throws(
+    () => checkLinuxPackage({ root, target: 'snap', asarApi }),
+    /Unbekanntes Linux-Paketziel/,
+  );
+});
+
+test('Linux smoke CLI refuses mistyped flags before inspecting files', () => {
+  const { spawnSync } = require('node:child_process');
+  const result = spawnSync(
+    process.execPath,
+    [path.resolve(__dirname, '../../scripts/smoke-linux-package.js'), '--target=snap'],
+    { encoding: 'utf8' },
+  );
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /Unbekanntes Argument/);
+});
+
+test('Linux package rejects duplicate bundled React and smartmontools source', (t) => {
+  const { root, resources, asarApi } = fixture(t);
+  asarApi.listPackage = () => [...REQUIRED_ASAR, '/node_modules/react/index.js'];
+  fs.mkdirSync(path.join(resources, 'smartmontools'), { recursive: true });
+  fs.writeFileSync(
+    path.join(resources, 'smartmontools', 'smartmontools-7.5-source.tar.gz'),
+    'duplicate',
+  );
+  const issues = checkLinuxPackage({ root, target: 'dir', asarApi }).join('\n');
+  assert.match(issues, /Frontend-Abhängigkeit/);
+  assert.match(issues, /smartmontools-7.5-source.tar.gz/);
+});

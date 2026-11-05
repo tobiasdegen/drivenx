@@ -1,0 +1,47 @@
+{
+  "model_name": "APPLE SSD AP0512Z",
+  "smart_status": {
+    "passed": true,
+    "nvme": {
+      "value": 0
+    }
+  },
+  "smart_support": {
+    "available": true,
+    "enabled": true
+  },
+  "nvme_smart_health_information_log": {
+    "nsid": -1,
+    "critical_warning": 0,
+    "temperature": 33,
+    "available_spare": 100,
+    "available_spare_threshold": 99,
+    "percentage_used": 1,
+    "data_units_read": 111189336,
+    "data_units_written": 45857107,
+    "host_reads": 2419231590,
+    "host_writes": 838169363,
+    "controller_busy_time": 0,
+    "power_cycles": 496,
+    "power_on_hours": 751,
+    "unsafe_shutdowns": 19,
+    "media_errors": 0,
+    "num_err_log_entries": 0
+  },
+  "spare_available": {
+    "current_percent": 100,
+    "threshold_percent": 99
+  },
+  "endurance_used": {
+    "current_percent": 1
+  },
+  "temperature": {
+    "current": 33
+  },
+  "device": {
+    "protocol": "NVMe"
+  },
+  "smartctl": {
+    "exit_status": 4
+  }
+}

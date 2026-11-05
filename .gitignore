@@ -1,0 +1,48 @@
+# Dependencies and generated application packages
+node_modules/
+dist/
+release/
+out/
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+*.tsbuildinfo
+.eslintcache
+
+# Local logs, caches and temporary files
+*.log
+npm-debug.log*
+.cache/
+.tmp/
+.DS_Store
+._*
+__MACOSX/
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# Python caches (Linux tooling)
+__pycache__/
+*.pyc
+*.pyo
+
+# Local environment and release credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.p12
+*.pfx
+*.p8
+*.pem
+*.key
+*.mobileprovision
+*.provisionprofile
+*.jks
+*.keystore
+
+# Generated localization exchange template
+translations-template.csv

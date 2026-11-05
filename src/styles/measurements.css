@@ -1,0 +1,492 @@
+/* Measurement plotting and responsive SMART attribute table */
+.history-chart {
+  margin: 16px 0 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface2);
+}
+.history-chart-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.history-chart-toolbar h4 {
+  margin: 0;
+  font-size: 13px;
+}
+.history-chart-toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.history-chart-toolbar select {
+  min-width: 170px;
+  max-width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+}
+.history-chart svg {
+  display: block;
+  width: 100%;
+  max-height: 290px;
+  margin-top: 8px;
+  overflow: visible;
+}
+.history-chart-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+.history-chart-line {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.history-chart-point {
+  fill: var(--blue);
+  stroke: var(--surface2);
+  stroke-width: 2;
+}
+.history-chart-axis {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.history-chart .history-note {
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.history-note-secondary {
+  margin-top: 11px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.history-trends .history-note {
+  margin: 12px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.attribute-table-scroll {
+  height: clamp(300px, calc(100vh - 335px), 1100px);
+  max-height: none;
+}
+@media (max-height: 690px) {
+  .attribute-table-scroll {
+    height: max(240px, calc(100vh - 290px));
+  }
+}
+@media (max-width: 720px) {
+  .attribute-table-scroll {
+    height: min(65vh, 660px);
+  }
+}
+
+/* Data quality: diagnostic counters and readable binary capabilities. */
+.temperature-sensors {
+  display: flex;
+  gap: 5px 12px;
+  flex-wrap: wrap;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.diagnostic-counter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 10px 13px;
+  margin: 0 0 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.diagnostic-counter span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.diagnostic-counter strong {
+  font:
+    700 16px ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+}
+.diagnostic-counter small {
+  color: var(--muted);
+  font-size: 10px;
+  margin-left: auto;
+}
+.technical-boolean {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.technical-boolean.is-yes {
+  color: var(--green);
+}
+.technical-boolean.is-no {
+  color: var(--muted);
+}
+
+/* Empty data views should not fill the available viewport. */
+.attribute-table-scroll.attribute-table-empty {
+  height: auto;
+  min-height: 0;
+  max-height: 240px;
+}
+.finding.neutral svg {
+  color: var(--muted);
+}
+
+/* Diagnosegebundene SMART-Einordnung: Farben unterstützen die Textlabels,
+   unbekannte Herstellerwerte werden ausdrücklich nicht als gesund markiert. */
+.smart-attribute-summary {
+  display: flex;
+  gap: 9px 18px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 11px 12px;
+  margin: 10px 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface2);
+  font-size: 12px;
+}
+.smart-attribute-summary > span {
+  color: var(--muted);
+  flex: 1 1 300px;
+  line-height: 1.5;
+}
+.smart-attribute-only-findings {
+  margin-left: auto;
+}
+.smart-attribute-limitation,
+.smart-attribute-unlinked {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 9px 0;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+.smart-attribute-limitation svg,
+.smart-attribute-unlinked svg {
+  flex: none;
+  margin-top: 1px;
+}
+.smart-attribute-panel table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.smart-attribute-panel th:first-child {
+  min-width: 225px;
+}
+.smart-attribute-panel th {
+  white-space: nowrap;
+}
+.smart-attribute-row td {
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+.smart-attribute-row.is-warning td {
+  background: color-mix(in srgb, var(--orange) 7%, var(--surface));
+}
+.smart-attribute-row.is-critical td,
+.smart-attribute-row.is-defective td {
+  background: color-mix(in srgb, var(--red) 10%, var(--surface));
+}
+.smart-attribute-row.is-observe td {
+  background: color-mix(in srgb, var(--blue) 6%, var(--surface));
+}
+.smart-attribute-row.is-warning td:first-child {
+  box-shadow: inset 3px 0 var(--orange);
+}
+.smart-attribute-row.is-critical td:first-child,
+.smart-attribute-row.is-defective td:first-child {
+  box-shadow: inset 3px 0 var(--red);
+}
+.smart-attribute-row.is-observe td:first-child {
+  box-shadow: inset 3px 0 var(--blue);
+}
+.smart-attribute-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.smart-attribute-status.is-none {
+  color: var(--muted);
+  font-weight: 500;
+}
+.smart-attribute-status.is-observe {
+  color: var(--blue);
+  background: var(--blue-bg);
+}
+.smart-attribute-status.is-warning {
+  color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 12%, var(--surface2));
+}
+.smart-attribute-status.is-critical,
+.smart-attribute-status.is-defective {
+  color: var(--red);
+  background: color-mix(in srgb, var(--red) 12%, var(--surface2));
+}
+.smart-attribute-status.is-ok {
+  color: var(--green);
+}
+.smart-attribute-name {
+  display: block;
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+}
+.smart-attribute-name:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
+.smart-attribute-name:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+.smart-attribute-description,
+.smart-attribute-finding {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.smart-attribute-finding {
+  font-weight: 600;
+  color: var(--text);
+}
+.smart-attribute-raw {
+  overflow-wrap: anywhere;
+  min-width: 98px;
+  max-width: 300px;
+}
+/* Keep the scan readable: meaning, value and diagnosis only. ATA normalized
+   fields remain accessible in the detail dialog rather than cramping the table. */
+.smart-attribute-panel table {
+  table-layout: fixed;
+  min-width: 720px;
+}
+.smart-attribute-panel th:first-child,
+.smart-attribute-panel td:first-child {
+  width: 60%;
+}
+.smart-attribute-panel .smart-attribute-value {
+  width: 23%;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  min-width: 180px;
+}
+.smart-attribute-panel .smart-attribute-assessment {
+  width: 17%;
+  text-align: right;
+}
+.smart-attribute-panel td.smart-attribute-value {
+  font-size: 13px;
+  font-weight: 600;
+}
+.smart-attribute-panel td.smart-attribute-assessment {
+  vertical-align: middle;
+}
+.smart-attribute-no-finding {
+  color: var(--muted);
+}
+.smart-attribute-id {
+  display: inline-block;
+  font-size: 10px;
+  margin-top: 3px;
+  color: var(--muted);
+}
+.smart-attribute-panel .smart-attribute-name {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.smart-attribute-panel .smart-attribute-description {
+  max-width: 620px;
+}
+@media (max-width: 720px) {
+  .smart-attribute-panel table {
+    min-width: 720px;
+  }
+}
+.attribute-detail-evidence {
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface2);
+}
+.attribute-detail-evidence.is-warning {
+  border-left: 3px solid var(--orange);
+}
+.attribute-detail-evidence.is-critical,
+.attribute-detail-evidence.is-defective {
+  border-left: 3px solid var(--red);
+}
+.attribute-detail-evidence.is-observe {
+  border-left: 3px solid var(--blue);
+}
+.attribute-detail-evidence h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+.attribute-detail-evidence strong {
+  display: block;
+  margin-bottom: 8px;
+}
+.attribute-detail-evidence ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.attribute-detail-evidence p,
+.attribute-detail-evidence li {
+  margin: 0 0 5px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.attribute-normalized-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.attribute-normalized-grid > div {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface2);
+}
+.attribute-normalized-grid span {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.attribute-normalized-grid strong {
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 720px) {
+  .smart-attribute-only-findings {
+    margin-left: 0;
+  }
+  .smart-attribute-panel th:first-child {
+    min-width: 225px;
+  }
+  .attribute-detail-evidence {
+    padding: 14px 18px;
+  }
+}
+/* WCAG-aware severity ink on the light desktop theme. */
+:root[data-theme='light'] .smart-attribute-panel,
+:root[data-theme='light'] .attribute-detail {
+  --smart-danger: #aa2436;
+  --smart-warning: #89530d;
+  --smart-observe: #2455aa;
+}
+.smart-attribute-panel,
+.attribute-detail {
+  --smart-danger: var(--red);
+  --smart-warning: var(--orange);
+  --smart-observe: var(--blue);
+}
+.smart-attribute-row.is-critical td:first-child,
+.smart-attribute-row.is-defective td:first-child {
+  box-shadow: inset 3px 0 var(--smart-danger);
+}
+.smart-attribute-row.is-warning td:first-child {
+  box-shadow: inset 3px 0 var(--smart-warning);
+}
+.smart-attribute-status.is-critical,
+.smart-attribute-status.is-defective {
+  color: var(--smart-danger);
+}
+.smart-attribute-status.is-warning {
+  color: var(--smart-warning);
+}
+.smart-attribute-status.is-observe {
+  color: var(--smart-observe);
+}
+.attribute-detail {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Compact SMART overview. Detailed explanations live in the attribute dialog. */
+.smart-attribute-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.smart-attribute-heading .smart-attribute-id {
+  flex: none;
+  min-width: 34px;
+  margin: 0;
+  padding: 3px 5px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 11px;
+}
+.smart-attribute-heading .smart-attribute-name {
+  min-width: 0;
+}
+.smart-attribute-panel th:first-child,
+.smart-attribute-panel td:first-child {
+  width: 48%;
+}
+.smart-attribute-panel .smart-attribute-value {
+  width: 33%;
+  min-width: 140px;
+}
+.smart-attribute-panel .smart-attribute-assessment {
+  width: 19%;
+}
+.smart-attribute-row td {
+  vertical-align: middle;
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+.smart-attribute-finding {
+  margin: 7px 0 1px 46px;
+}

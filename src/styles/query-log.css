@@ -1,0 +1,338 @@
+/* Standalone, session-scoped query activity; output is only retrieved on demand. */
+.query-log-window {
+  height: 100vh;
+  min-width: 0;
+  overflow: hidden;
+}
+.query-log-view {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  padding: 20px 24px 20px;
+}
+.query-log-heading {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.query-log-heading h2 {
+  font-size: 20px;
+  font-weight: 720;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+.query-log-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.query-log-buttons button,
+.query-log-inspector button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.query-log-toolbar {
+  display: flex;
+  flex: none;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.query-log-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface);
+  flex: 1 1 320px;
+  min-width: 0;
+}
+.query-log-search input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  color: var(--text);
+  background: transparent;
+}
+.query-log-toolbar-side {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.query-log-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.query-log-toggle input {
+  accent-color: var(--blue);
+}
+.query-log-toggle--muted {
+  color: var(--muted);
+}
+.query-log-count {
+  flex: none;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  padding-left: 2px;
+}
+.query-log-scroll {
+  flex: 1;
+  min-height: 0;
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  overscroll-behavior: contain;
+}
+.query-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.query-log-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.query-log-table th {
+  background: var(--surface2);
+  font-size: 11px;
+  font-weight: 720;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.query-log-table th,
+.query-log-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.query-log-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.query-log-table tbody tr {
+  transition: background-color 0.12s ease;
+}
+.query-log-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.015);
+}
+.query-log-table tbody tr:hover td {
+  background: rgba(74, 134, 232, 0.08);
+}
+.query-log-table tbody tr.query-log-selected td {
+  background: color-mix(in srgb, var(--surface2) 72%, rgba(74, 134, 232, 0.14));
+}
+.query-log-operation {
+  min-width: 190px;
+  width: 36%;
+}
+.query-log-operation strong {
+  display: block;
+  font-weight: 650;
+  margin-bottom: 5px;
+}
+.query-log-operation code {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.query-log-device {
+  overflow-wrap: anywhere;
+  max-width: 160px;
+}
+.query-log-status {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-size: 11px;
+  white-space: nowrap;
+  background: var(--surface2);
+}
+.query-log-status--ok {
+  color: var(--green);
+}
+.query-log-status--finding,
+.query-log-status--partial {
+  color: var(--orange);
+}
+.query-log-status--error {
+  color: var(--red);
+}
+.query-log-status--running {
+  color: var(--blue);
+}
+.query-log-table small {
+  display: block;
+  margin-top: 6px;
+  max-width: 220px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 10px;
+}
+.query-log-empty {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 5px;
+}
+.query-log-show {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* The inspector overlays the table. Its close button never scrolls with raw data. */
+.query-log-overlay {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(2, 8, 17, 0.64);
+}
+.query-log-inspector {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: min(850px, 92vw);
+  height: 100%;
+  background: var(--bg);
+  border-left: 1px solid var(--line);
+  box-shadow: -12px 0 42px rgba(0, 0, 0, 0.28);
+}
+.query-log-inspector-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  gap: 15px;
+  border-bottom: 1px solid var(--line);
+  background: var(--sidebar);
+}
+.query-log-inspector-title {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+.query-log-inspector-title strong {
+  font-size: 17px;
+}
+.query-log-inspector-title span {
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 11px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.query-log-inspector-close {
+  flex: none;
+}
+.query-log-inspector-toolbar {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.query-log-inspector-toolbar small {
+  color: var(--green);
+}
+.query-log-output-scroll {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  margin: 14px 20px 20px;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  overscroll-behavior: contain;
+}
+.query-log-result-text {
+  margin: 0;
+  padding: 16px;
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
+  color: var(--text);
+  font:
+    12px/1.6 ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  white-space: pre;
+  tab-size: 2;
+}
+.query-log-result-text--wrapped {
+  width: 100%;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.query-log-result-note {
+  margin: 12px 20px 0;
+  color: var(--orange);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.query-log-inspector-message {
+  margin: 20px;
+  color: var(--muted);
+}
+@media (max-width: 860px) {
+  .query-log-view {
+    padding: 15px;
+  }
+  .query-log-toolbar {
+    flex-wrap: wrap;
+  }
+  .query-log-toolbar-side {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .query-log-heading {
+    align-items: flex-start;
+  }
+  .query-log-inspector {
+    width: 100vw;
+  }
+  .query-log-operation {
+    min-width: 150px;
+  }
+}
+
+.query-log-additional-finding {
+  display: table;
+  margin-top: 5px;
+  white-space: normal;
+}

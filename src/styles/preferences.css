@@ -1,0 +1,337 @@
+/* Standalone settings window. A compact desktop form, with clear section hierarchy. */
+.preferences-window {
+  height: 100vh;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+.preferences-header {
+  flex: none;
+  gap: 10px;
+  padding: 14px 22px;
+  min-height: 64px;
+}
+.preferences-header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 720;
+  letter-spacing: -0.03em;
+}
+.preferences-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 22px 22px;
+  scrollbar-gutter: stable;
+}
+.preferences-group {
+  padding: 0 20px 8px;
+  margin-bottom: 14px;
+  border-radius: 5px;
+}
+.preferences-group h2 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 -20px 0;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+}
+.preferences-group h2 svg {
+  color: var(--blue);
+}
+.preferences-group .pref-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(200px, 1.15fr);
+  align-items: center;
+  gap: 18px;
+  margin: 0;
+  min-height: 57px;
+  padding: 9px 0;
+}
+.preferences-group .pref-row + .pref-row {
+  border-top: 1px solid var(--line);
+}
+.preferences-group .pref-row label {
+  color: var(--text);
+  font-size: 13px;
+}
+.preferences-group .pref-row select,
+.preferences-group .pref-field input,
+.preferences-group .pref-field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  padding: 9px 11px;
+  border-radius: 5px;
+  font-size: 13px;
+  outline-offset: 2px;
+}
+.pref-select {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+.preferences-group .pref-row .pref-select select {
+  display: block;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 42px;
+  cursor: pointer;
+}
+.pref-select-chevron {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--muted);
+}
+.preferences-group .pref-row select:focus-visible,
+.preferences-group .pref-field input:focus-visible,
+.preferences-group .pref-field textarea:focus-visible {
+  outline: 2px solid var(--blue);
+}
+.preferences-group .pref-field {
+  display: grid;
+  gap: 7px;
+  margin: 14px 0;
+}
+.preferences-group .pref-field label,
+.pref-field-label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.preferences-group .pref-field textarea {
+  resize: vertical;
+  min-height: 66px;
+}
+.preferences-group .pref-switch-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 17px 0 12px;
+  cursor: pointer;
+}
+.pref-switch-copy {
+  display: grid;
+  gap: 6px;
+  flex: 1;
+}
+.pref-switch-copy strong {
+  font-size: 13px;
+  font-weight: 650;
+}
+.pref-switch-copy small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.55;
+  max-width: 460px;
+}
+.preferences-group .pref-switch-row input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.pref-switch-track {
+  box-sizing: border-box;
+  flex: none;
+  width: 36px;
+  height: 21px;
+  border-radius: 99px;
+  background: var(--line);
+  border: 1px solid var(--muted);
+  position: relative;
+  transition: background 0.12s;
+}
+.pref-switch-track::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  left: 2px;
+  top: 2px;
+  background: var(--text);
+  border-radius: 50%;
+  transition: transform 0.12s;
+}
+.pref-switch-row input:checked + .pref-switch-track {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.pref-switch-row input:checked + .pref-switch-track::after {
+  transform: translateX(15px);
+  background: #fff;
+}
+.pref-switch-row input:focus-visible + .pref-switch-track {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+.pref-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 13px 0 8px;
+  border-top: 1px solid var(--line);
+}
+.pref-logo-text {
+  display: grid;
+  gap: 5px;
+}
+.pref-logo-text small {
+  color: var(--muted);
+  font-size: 11px;
+}
+.preferences-group .logo-controls {
+  display: flex;
+  gap: 8px;
+}
+.preferences-group .logo-controls button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+.preferences-group .company-logo-preview {
+  max-width: 200px;
+  max-height: 72px;
+  margin: 8px 0;
+}
+.pref-technical {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  margin-bottom: 4px;
+  overflow: hidden;
+}
+.pref-technical summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 14px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 650;
+  list-style: none;
+}
+.pref-technical summary svg {
+  flex: none;
+  color: var(--muted);
+}
+.pref-technical summary > span {
+  flex: 1;
+}
+.pref-technical[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+.pref-technical-body {
+  padding: 17px 20px 19px;
+}
+.pref-technical-body > p {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 12px;
+  margin: 0 0 16px;
+}
+.pref-technical .pref-details {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  gap: 12px 16px;
+  margin: 0;
+}
+.pref-technical .pref-details dt {
+  color: var(--muted);
+}
+.pref-technical .pref-details dd {
+  min-width: 0;
+  margin: 0;
+}
+.pref-technical .pref-details code {
+  display: block;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.pref-footer {
+  flex: none;
+  padding: 12px 22px;
+  gap: 9px;
+}
+.pref-footer-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-right: auto;
+  color: var(--muted);
+  font-size: 11px;
+}
+.pref-footer-status svg {
+  color: var(--green);
+}
+.pref-footer .button {
+  min-height: 37px;
+}
+.pref-loading {
+  padding: 24px;
+  color: var(--muted);
+}
+@media (max-width: 650px) {
+  .preferences-content {
+    padding: 14px;
+  }
+  .preferences-header,
+  .pref-footer {
+    padding: 12px 14px;
+  }
+  .preferences-group .pref-row {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+  .pref-footer-status {
+    display: none;
+  }
+  .pref-technical .pref-details {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .pref-technical .pref-details dd + dt {
+    margin-top: 10px;
+  }
+}
+
+.pref-technical summary::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  flex: none;
+  margin: -4px 4px 0 6px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg);
+  transition:
+    transform 0.15s ease,
+    margin 0.15s ease;
+}
+.pref-technical[open] summary::after {
+  transform: rotate(225deg);
+  margin-top: 4px;
+}
+.pref-technical summary::-webkit-details-marker {
+  display: none;
+}
+.preferences-group .pref-switch-row input {
+  padding: 0;
+  border: 0;
+}

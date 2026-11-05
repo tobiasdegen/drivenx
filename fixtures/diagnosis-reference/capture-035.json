@@ -1,0 +1,65 @@
+{
+  "model_name": "WD Blue SN580 500GB",
+  "smart_status": {
+    "passed": true,
+    "nvme": {
+      "value": 0
+    }
+  },
+  "smart_support": {
+    "available": true,
+    "enabled": true
+  },
+  "nvme_smart_health_information_log": {
+    "nsid": -1,
+    "critical_warning": 0,
+    "temperature": 51,
+    "available_spare": 100,
+    "available_spare_threshold": 10,
+    "percentage_used": 0,
+    "data_units_read": 110251,
+    "data_units_written": 141762,
+    "host_reads": 807428,
+    "host_writes": 142040,
+    "controller_busy_time": 1,
+    "power_cycles": 24,
+    "power_on_hours": 1,
+    "unsafe_shutdowns": 10,
+    "media_errors": 0,
+    "num_err_log_entries": 0,
+    "warning_temp_time": 0,
+    "critical_comp_time": 0,
+    "temperature_sensors": [
+      72,
+      45
+    ]
+  },
+  "nvme_error_information_log": {
+    "unread": 0
+  },
+  "nvme_self_test_log": {
+    "nsid": -1,
+    "current_self_test_operation": {
+      "value": 0,
+      "string": "No self-test in progress"
+    }
+  },
+  "spare_available": {
+    "current_percent": 100,
+    "threshold_percent": 10
+  },
+  "endurance_used": {
+    "current_percent": 0
+  },
+  "temperature": {
+    "op_limit_max": 84,
+    "critical_limit_max": 88,
+    "current": 51
+  },
+  "device": {
+    "protocol": "NVMe"
+  },
+  "smartctl": {
+    "exit_status": 0
+  }
+}

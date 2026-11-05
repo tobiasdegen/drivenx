@@ -1,0 +1,247 @@
+{
+  "name": "drivenx",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Open-source storage diagnostics and drive utilities for Windows, macOS and Linux",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently -k \"vite --host 127.0.0.1\" \"wait-on tcp:127.0.0.1:5173 && cross-env VITE_DEV_SERVER_URL=http://127.0.0.1:5173 electron .\"",
+    "start": "electron .",
+    "build": "npm run typecheck && vite build",
+    "test": "npm run test:unit && npm run test:ui",
+    "typecheck": "npm run typecheck:backend && npm run typecheck:app && npm run typecheck:contracts",
+    "typecheck:app": "tsc --noEmit",
+    "typecheck:backend": "tsc -p tsconfig.backend.json",
+    "typecheck:contracts": "tsc -p tsconfig.contracts.json",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "translations:check": "node --test tests/electron/translations.test.js tests/electron/translation-coverage.test.js",
+    "translations:export": "node scripts/export-translations.js",
+    "usbids:check": "node scripts/build-usb-id-index.js --check",
+    "usbids:generate": "node scripts/build-usb-id-index.js",
+    "licenses:check": "node scripts/sync-third-party-versions.js",
+    "licenses:sync": "node scripts/sync-third-party-versions.js --write",
+    "check:resources": "node scripts/check-release.js",
+    "release:check": "npm test && npm run audit:production && npm run licenses:check && npm run usbids:check && npm run check:resources && npm run format:check && npm run lint && npm run build",
+    "release:win": "npm run release:check && electron-builder --win nsis portable --x64 && npm run smoke:win",
+    "dist:win:dir": "npm run build && electron-builder --win dir --x64 && npm run smoke:win -- --target=dir",
+    "dist:mac": "npm run release:check && node scripts/check-mac-smartctl.js && electron-builder --mac dmg zip --arm64 && npm run smoke:mac",
+    "dist:linux": "npm run release:check && electron-builder --linux AppImage deb --x64 && npm run smoke:linux",
+    "dist:linux:dir": "npm run build && electron-builder --linux dir --x64 && npm run smoke:linux -- --target=dir",
+    "smoke:win": "node scripts/smoke-windows-package.js",
+    "smoke:mac": "node scripts/smoke-mac-package.js",
+    "smoke:linux": "node scripts/smoke-linux-package.js",
+    "audit": "npm audit",
+    "audit:production": "npm audit --omit=dev",
+    "linux:setup-access": "sudo sh scripts/linux-install-access.sh",
+    "linux:remove-access": "sudo sh scripts/linux-remove-access.sh",
+    "test:unit": "node --test tests/electron/*.test.js",
+    "test:ui": "vitest run tests/ui",
+    "test:ui:watch": "vitest tests/ui",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "lucide-react": "1.66.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@electron/asar": "4.3.1",
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.2.1",
+    "concurrently": "10.0.6",
+    "cross-env": "10.1.0",
+    "electron": "45.2.1",
+    "electron-builder": "26.18.0",
+    "eslint": "10.14.0",
+    "prettier": "3.9.10",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "vitest": "5.1.0",
+    "wait-on": "9.5.1"
+  },
+  "build": {
+    "appId": "io.drivenx.app",
+    "productName": "DriveNX",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "shared/**/*",
+      "electron/**/*",
+      "locales/**/*",
+      "package.json",
+      "!**/*.d.mts",
+      "!**/*.d.ts",
+      "!**/node_modules/react/**/*",
+      "!**/node_modules/react-dom/**/*",
+      "!**/node_modules/lucide-react/**/*",
+      "!**/node_modules/scheduler/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "vendor/smartmontools",
+        "to": "smartmontools",
+        "filter": [
+          "AUTHORS-smartmontools.txt",
+          "COPYING-smartmontools.txt",
+          "drivedb.h"
+        ]
+      },
+      {
+        "from": "vendor/usb-ids",
+        "to": "usb-ids",
+        "filter": [
+          "index.json",
+          "LICENSE-BSD-3-Clause.txt"
+        ]
+      },
+      {
+        "from": "LICENSE-THIRD-PARTY.md",
+        "to": "LICENSE-THIRD-PARTY.md"
+      },
+      {
+        "from": "LICENSE.md",
+        "to": "LICENSE.md"
+      },
+      {
+        "from": "licenses",
+        "to": "licenses"
+      },
+      {
+        "from": "DISCLAIMER.md",
+        "to": "DISCLAIMER.md"
+      },
+      {
+        "from": "DISCLAIMER.en.md",
+        "to": "DISCLAIMER.en.md"
+      }
+    ],
+    "asar": true,
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "build/icon.icns",
+      "extraResources": [
+        {
+          "from": "vendor/smartmontools/darwin",
+          "to": "smartmontools/darwin"
+        },
+        {
+          "from": "build/icon.png",
+          "to": "icon.png"
+        },
+        {
+          "from": "vendor/smartmontools/smartmontools-7.5-source.tar.gz",
+          "to": "smartmontools/smartmontools-7.5-source.tar.gz"
+        }
+      ],
+      "minimumSystemVersion": "15.0.0"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "requestedExecutionLevel": "requireAdministrator",
+      "icon": "build/icon.ico",
+      "extraResources": [
+        {
+          "from": "vendor/smartmontools/win32",
+          "to": "smartmontools/win32"
+        },
+        {
+          "from": "build/icon.png",
+          "to": "icon.png"
+        },
+        {
+          "from": "vendor/smartmontools/smartmontools-7.5-source.tar.gz",
+          "to": "smartmontools/smartmontools-7.5-source.tar.gz"
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "DriveNX",
+      "uninstallDisplayName": "DriveNX",
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "requestExecutionLevel": "admin",
+      "useZip": true,
+      "artifactName": "${productName}-Portable-${version}-${arch}.${ext}"
+    },
+    "afterPack": "scripts/after-pack.js",
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Utility",
+      "icon": "build/app-icon-source.svg",
+      "synopsis": "Storage diagnostics and drive utilities",
+      "artifactName": "${productName}-${version}-linux-${arch}.${ext}",
+      "extraResources": [
+        {
+          "from": "build/icon.png",
+          "to": "icon.png"
+        },
+        {
+          "from": "linux/privileged",
+          "to": "linux-privileged",
+          "filter": [
+            "drivenx-smartctl-helper",
+            "io.drivenx.smartctl.policy"
+          ]
+        }
+      ]
+    },
+    "deb": {
+      "depends": [
+        "default",
+        "smartmontools",
+        "pkexec",
+        "python3"
+      ],
+      "afterInstall": "scripts/linux-deb-after-install.sh",
+      "afterRemove": "scripts/linux-deb-after-remove.sh"
+    },
+    "allowMissingDependencies": false
+  },
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "author": "Tobias Degen",
+  "license": "MIT"
+}

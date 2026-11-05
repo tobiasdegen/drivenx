@@ -1,0 +1,481 @@
+{
+  "description": "Classification regression baseline, not ground truth or measured failure probability",
+  "captures": 43,
+  "distinctDrivesInSource": 43,
+  "algorithmVersion": "1.0.0",
+  "cases": [
+    {
+      "file": "capture-001.json",
+      "model": "APPLE SSD AP0512Z",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-002.json",
+      "model": "FUJITSU MJA2160BH G2",
+      "expected": {
+        "assessment": "complete",
+        "media": "defective",
+        "connection": "observe",
+        "thermal": null,
+        "overallAlert": "defective"
+      }
+    },
+    {
+      "file": "capture-003.json",
+      "model": "Hitachi HTS543232L9A300",
+      "expected": {
+        "assessment": "complete",
+        "media": "observe",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "observe"
+      }
+    },
+    {
+      "file": "capture-004.json",
+      "model": "Hitachi HTS545050B9A300",
+      "expected": {
+        "assessment": "complete",
+        "media": "observe",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "observe"
+      }
+    },
+    {
+      "file": "capture-005.json",
+      "model": "Hitachi HTS545050B9A300",
+      "expected": {
+        "assessment": "complete",
+        "media": "observe",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "observe"
+      }
+    },
+    {
+      "file": "capture-006.json",
+      "model": "INTEL SSDSC2KW128G8",
+      "expected": {
+        "assessment": "complete",
+        "media": "critical",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "critical"
+      }
+    },
+    {
+      "file": "capture-007.json",
+      "model": "Innovation IT SSD 240",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-008.json",
+      "model": "KINGSTON SV300S37A120G",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-009.json",
+      "model": "Micron_1100_MTFDDAK256TBN",
+      "expected": {
+        "assessment": "complete",
+        "media": "critical",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "critical"
+      }
+    },
+    {
+      "file": "capture-010.json",
+      "model": "Micron_1100_MTFDDAK256TBN",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-011.json",
+      "model": "PNY CS900 500GB SSD",
+      "expected": {
+        "assessment": "partial",
+        "media": null,
+        "connection": null,
+        "thermal": null,
+        "overallAlert": null
+      }
+    },
+    {
+      "file": "capture-012.json",
+      "model": "ST1000DM003-1ER162",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-013.json",
+      "model": "ST250LT012-9WS141",
+      "expected": {
+        "assessment": "complete",
+        "media": "defective",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "defective"
+      }
+    },
+    {
+      "file": "capture-014.json",
+      "model": "ST250LT012-9WS141",
+      "expected": {
+        "assessment": "complete",
+        "media": "defective",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "defective"
+      }
+    },
+    {
+      "file": "capture-015.json",
+      "model": "ST3808110AS",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-016.json",
+      "model": "ST500LM034-2GH17A",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-017.json",
+      "model": "ST500LM034-2GH17A",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-020.json",
+      "model": "Samsung SSD 860 EVO 1TB",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-021.json",
+      "model": "Samsung SSD 860 EVO M.2 250GB",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-022.json",
+      "model": "Samsung SSD 870 EVO 250GB",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-023.json",
+      "model": "Samsung SSD 870 EVO 500GB",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": "observe",
+        "thermal": null,
+        "overallAlert": "observe"
+      }
+    },
+    {
+      "file": "capture-024.json",
+      "model": "Samsung SSD 870 QVO 1TB",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": "warning",
+        "thermal": null,
+        "overallAlert": "warning"
+      }
+    },
+    {
+      "file": "capture-025.json",
+      "model": "SanDisk SDSSDP128G",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-026.json",
+      "model": "SanDisk SDSSDP128G",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-027.json",
+      "model": "TOSHIBA DT01ACA100",
+      "expected": {
+        "assessment": "complete",
+        "media": "critical",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "critical"
+      }
+    },
+    {
+      "file": "capture-028.json",
+      "model": "TOSHIBA DT01ACA100",
+      "expected": {
+        "assessment": "complete",
+        "media": "critical",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "critical"
+      }
+    },
+    {
+      "file": "capture-029.json",
+      "model": "TOSHIBA MQ01ABF050",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-030.json",
+      "model": "TS128GMTS800",
+      "expected": {
+        "assessment": "complete",
+        "media": "critical",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "critical"
+      }
+    },
+    {
+      "file": "capture-031.json",
+      "model": "TS64GMTS952T2",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": "observe",
+        "thermal": null,
+        "overallAlert": "observe"
+      }
+    },
+    {
+      "file": "capture-032.json",
+      "model": "TS64GMTS952T2",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-033.json",
+      "model": "WD Blue SN5000 500GB",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-034.json",
+      "model": "WD Blue SN5000 500GB",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-035.json",
+      "model": "WD Blue SN580 500GB",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-036.json",
+      "model": "WDC PC SN520 SDAPNUW-256G-1006",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-037.json",
+      "model": "WDC PC SN530 SDBPNPZ-256G-1002",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-038.json",
+      "model": "WDC WD1001FALS-40Y6A0",
+      "expected": {
+        "assessment": "complete",
+        "media": "critical",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "critical"
+      }
+    },
+    {
+      "file": "capture-039.json",
+      "model": "WDC WD10EZEX-07WN4A0",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-040.json",
+      "model": "WDC WD3200LPVX-16V0TT0",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-041.json",
+      "model": "WDC WD5000AAKX-07U6AA0",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-042.json",
+      "model": "WDC WD5000BEVT-00A0RT0",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-043.json",
+      "model": "WDC WD5000BEVT-22ZAT0",
+      "expected": {
+        "assessment": "complete",
+        "media": "ok",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "ok"
+      }
+    },
+    {
+      "file": "capture-044.json",
+      "model": "WDC WD5000LPVX-22V0TT0",
+      "expected": {
+        "assessment": "complete",
+        "media": "warning",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "warning"
+      }
+    },
+    {
+      "file": "capture-045.json",
+      "model": "WDC WD7500BPVT-60HXZT3",
+      "expected": {
+        "assessment": "complete",
+        "media": "warning",
+        "connection": null,
+        "thermal": null,
+        "overallAlert": "warning"
+      }
+    }
+  ]
+}

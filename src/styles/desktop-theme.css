@@ -1,0 +1,386 @@
+/* Technical desktop-tool visual language */
+:root {
+  --bg: #0a0f18;
+  --sidebar: #0d1420;
+  --surface: #121b28;
+  --surface2: #172233;
+  --line: #263346;
+  --text: #e7eef8;
+  --muted: #8ea0b8;
+  --blue: #4a86e8;
+  --blue-bg: #1a2b45;
+}
+:root[data-theme='light'] {
+  --bg: #f2f5f9;
+  --sidebar: #eef2f6;
+  --surface: #ffffff;
+  --surface2: #f6f8fb;
+  --line: #cfd7e2;
+  --text: #162231;
+  --muted: #66788f;
+  --blue: #235fc4;
+  --blue-bg: #deebff;
+}
+body {
+  font-size: 13px;
+}
+.brand {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.brand-symbol {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.brand-symbol img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.brand strong {
+  font-size: 17px;
+}
+.brand small {
+  font-size: 8px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+.sidebar-title,
+.breadcrumb,
+.stat-label,
+.info-list dt,
+.quick-counts span,
+.hardware-info-card span,
+.hardware-technical-list dt,
+.table-head p,
+.panel-description,
+.subline,
+.runtime,
+.device-status-line,
+.device-metrics,
+.connection-step small,
+.connection-caption,
+.readout-note,
+.finding,
+.footnote,
+.disclaimer,
+.topbar p {
+  letter-spacing: 0.015em;
+}
+.sidebar {
+  width: 286px;
+  background: var(--sidebar);
+}
+.device-list {
+  padding: 10px;
+}
+.device-item {
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  background: transparent;
+  margin-bottom: 8px;
+  padding: 12px 10px;
+}
+.device-item:hover {
+  background: var(--surface);
+}
+.device-item.chosen {
+  background: var(--surface2);
+  border-color: #4a86e8;
+}
+.sidebar-foot {
+  background: rgba(255, 255, 255, 0.01);
+}
+.main {
+  padding: 20px 26px 28px;
+}
+.main > .topbar {
+  top: -20px;
+  margin-top: -20px;
+  padding: 20px 0 12px;
+  margin-bottom: 16px;
+}
+.topbar {
+  gap: 12px;
+}
+h1 {
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+.button,
+.search,
+.banner,
+.pill,
+.readout-note,
+.connection-expand,
+.hardware-info-card,
+.history-trend-card,
+.attribute-detail-card,
+.pref-row select,
+.pref-file input,
+.pref-file button,
+.settings-controls select,
+.select-file input,
+.logo-controls button,
+.preferences-group input,
+.preferences-group textarea,
+.attribute-detail-close,
+.connection-step,
+.quick-counts > div,
+.drive-icon,
+.stat,
+.panel,
+.preferences-group,
+.json-view,
+.table-scroll,
+.search {
+  border-radius: 4px;
+}
+.button {
+  padding: 10px 13px;
+  font-weight: 650;
+  box-shadow: none;
+}
+.button.primary {
+  background: #2d67cb;
+  border-color: #2d67cb;
+}
+.button.primary:hover {
+  background: #3974db;
+}
+.banner,
+.readout-note {
+  border: 1px solid var(--line);
+}
+.drive-heading {
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.drive-icon {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  background: var(--surface2);
+}
+.drive-name h2 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.stat,
+.panel,
+.quick-counts > div,
+.preferences-group,
+.hardware-info-card,
+.history-trend-card,
+.connection-step,
+.attribute-detail-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.stats,
+.quick-counts,
+.two-columns,
+.overview-layout,
+.hardware-view,
+.history-trend-grid,
+.hardware-card-grid,
+.hardware-technical-list,
+.connection-steps {
+  gap: 10px;
+}
+.stat {
+  padding: 14px 14px 13px;
+}
+.stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.stat-value,
+.quick-counts strong,
+.hardware-info-card strong,
+.history-trend-card strong,
+.attribute-detail-card strong,
+.info-list dd,
+.hardware-technical-list dd {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+.stat-value {
+  font-size: 22px;
+  margin-top: 8px;
+}
+.quick-counts > div {
+  padding: 10px 12px;
+}
+.quick-counts strong {
+  font-size: 15px;
+}
+.tabs {
+  gap: 0;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+.tabs button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 11px 14px;
+  border-bottom-width: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+.tabs button.selected {
+  color: var(--text);
+  background: rgba(74, 134, 232, 0.08);
+  border-bottom-color: var(--blue);
+}
+.panel {
+  padding: 18px;
+}
+.panel h3,
+.table-head h3,
+.preferences-group h2,
+.overview-panel-heading {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.finding {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  padding: 10px 11px;
+}
+.info-list > div {
+  padding: 10px 0;
+}
+.search {
+  padding: 8px 10px;
+  background: var(--surface2);
+}
+.search input {
+  width: 160px;
+}
+table {
+  font-size: 12px;
+}
+th {
+  background: var(--surface2);
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--line);
+}
+td {
+  padding: 11px 10px;
+}
+.table-scroll tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.015);
+}
+.table-scroll tbody tr:hover {
+  background: rgba(74, 134, 232, 0.08);
+}
+.json-view {
+  background: #0a1220;
+  border: 1px solid var(--line);
+  padding: 16px;
+  font-size: 11px;
+}
+:root[data-theme='light'] .json-view {
+  background: #f8fbff;
+}
+.hardware-info-card {
+  gap: 8px;
+  padding: 14px;
+}
+.hardware-info-card span,
+.hardware-technical-list dt,
+.connection-step small,
+.connection-caption,
+.history-trend-card span,
+.attribute-detail-key,
+.device-status-line,
+.device-metrics,
+.readout-note,
+.table-head p {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.hardware-info-card strong,
+.connection-step strong {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.hardware-technical {
+  margin-top: 14px;
+  padding-top: 12px;
+}
+.connection-index {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.connection-target {
+  background: rgba(74, 134, 232, 0.08);
+}
+.connection-target .connection-index {
+  border-radius: 3px;
+}
+.footer-note {
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.preferences-header,
+.pref-footer {
+  background: var(--sidebar);
+}
+.preferences-group {
+  padding: 18px;
+}
+.attribute-detail {
+  border-radius: 4px;
+}
+.attribute-detail-header,
+.attribute-detail-section,
+.attribute-detail-grid {
+  background: var(--surface);
+}
+@media (max-width: 1250px) {
+  .main {
+    padding: 18px 20px 24px;
+  }
+  .main > .topbar {
+    top: -18px;
+    margin-top: -18px;
+    padding-top: 18px;
+  }
+}
+
+/* Numeric data should lead the hierarchy; repeated card and table headings stay quiet. */
+.panel h3,
+.panel h4,
+.panel th {
+  text-transform: none;
+  letter-spacing: normal;
+}
+.panel th {
+  font-weight: 600;
+}
+
+/* Compact drive grouping below the scan control. */
+.device-list {
+  padding-top: 2px;
+}
+.drive-sidebar-group-heading {
+  margin: 8px 10px 7px;
+}
+.drive-sidebar-group + .drive-sidebar-group {
+  margin-top: 12px;
+}

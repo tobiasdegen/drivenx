@@ -1,0 +1,873 @@
+{
+  "model_name": "Hitachi HTS545050B9A300",
+  "rotation_rate": 5400,
+  "smart_status": {
+    "passed": true
+  },
+  "smart_support": {
+    "available": true,
+    "enabled": true
+  },
+  "ata_smart_attributes": {
+    "revision": 16,
+    "table": [
+      {
+        "id": 1,
+        "name": "Raw_Read_Error_Rate",
+        "value": 100,
+        "worst": 100,
+        "thresh": 62,
+        "when_failed": "",
+        "flags": {
+          "value": 11,
+          "string": "PO-R-- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 2,
+        "name": "Throughput_Performance",
+        "value": 100,
+        "worst": 100,
+        "thresh": 40,
+        "when_failed": "",
+        "flags": {
+          "value": 5,
+          "string": "P-S--- ",
+          "prefailure": true,
+          "updated_online": false,
+          "performance": true,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 3,
+        "name": "Spin_Up_Time",
+        "value": 136,
+        "worst": 136,
+        "thresh": 33,
+        "when_failed": "",
+        "flags": {
+          "value": 7,
+          "string": "POS--- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": true,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 94489280514,
+          "string": "2"
+        }
+      },
+      {
+        "id": 4,
+        "name": "Start_Stop_Count",
+        "value": 98,
+        "worst": 98,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 18,
+          "string": "-O--C- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 3285,
+          "string": "3285"
+        }
+      },
+      {
+        "id": 5,
+        "name": "Reallocated_Sector_Ct",
+        "value": 100,
+        "worst": 100,
+        "thresh": 5,
+        "when_failed": "",
+        "flags": {
+          "value": 51,
+          "string": "PO--CK ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 7,
+        "name": "Seek_Error_Rate",
+        "value": 100,
+        "worst": 100,
+        "thresh": 67,
+        "when_failed": "",
+        "flags": {
+          "value": 11,
+          "string": "PO-R-- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 8,
+        "name": "Seek_Time_Performance",
+        "value": 100,
+        "worst": 100,
+        "thresh": 40,
+        "when_failed": "",
+        "flags": {
+          "value": 5,
+          "string": "P-S--- ",
+          "prefailure": true,
+          "updated_online": false,
+          "performance": true,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 9,
+        "name": "Power_On_Hours",
+        "value": 94,
+        "worst": 94,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 18,
+          "string": "-O--C- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 2697,
+          "string": "2697"
+        }
+      },
+      {
+        "id": 10,
+        "name": "Spin_Retry_Count",
+        "value": 100,
+        "worst": 100,
+        "thresh": 60,
+        "when_failed": "",
+        "flags": {
+          "value": 19,
+          "string": "PO--C- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 12,
+        "name": "Power_Cycle_Count",
+        "value": 99,
+        "worst": 99,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 1958,
+          "string": "1958"
+        }
+      },
+      {
+        "id": 191,
+        "name": "G-Sense_Error_Rate",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 10,
+          "string": "-O-R-- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 192,
+        "name": "Power-Off_Retract_Count",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 75,
+          "string": "75"
+        }
+      },
+      {
+        "id": 193,
+        "name": "Load_Cycle_Count",
+        "value": 94,
+        "worst": 94,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 18,
+          "string": "-O--C- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 64098,
+          "string": "64098"
+        }
+      },
+      {
+        "id": 194,
+        "name": "Temperature_Celsius",
+        "value": 253,
+        "worst": 253,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 2,
+          "string": "-O---- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 188979019794,
+          "string": "18 (Min/Max 7/44)"
+        }
+      },
+      {
+        "id": 196,
+        "name": "Reallocated_Event_Count",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 197,
+        "name": "Current_Pending_Sector",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 34,
+          "string": "-O---K ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 198,
+        "name": "Offline_Uncorrectable",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 8,
+          "string": "---R-- ",
+          "prefailure": false,
+          "updated_online": false,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 199,
+        "name": "UDMA_CRC_Error_Count",
+        "value": 200,
+        "worst": 200,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 10,
+          "string": "-O-R-- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 223,
+        "name": "Load_Retry_Count",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 10,
+          "string": "-O-R-- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      }
+    ]
+  },
+  "ata_smart_error_log": {
+    "summary": {
+      "count": 6,
+      "table": [
+        {
+          "error_number": 6,
+          "lifetime_hours": 0,
+          "completion_registers": {
+            "error": 16,
+            "status": 81,
+            "count": 1,
+            "lba": 3705601,
+            "device": 224
+          },
+          "error_description": "Error: IDNF 1 sectors at LBA = 0x00388b01 = 3705601",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38900,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 53,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38900,
+              "command_name": "WRITE DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38900,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38900,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38900,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 5,
+          "lifetime_hours": 0,
+          "completion_registers": {
+            "error": 16,
+            "status": 81,
+            "count": 1,
+            "lba": 3705601,
+            "device": 224
+          },
+          "error_description": "Error: IDNF 1 sectors at LBA = 0x00388b01 = 3705601",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38700,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 628800,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38700,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 543200,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38700,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 6,
+                "lba": 543194,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38700,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 543193,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 38700,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 4,
+          "lifetime_hours": 0,
+          "completion_registers": {
+            "error": 16,
+            "status": 81,
+            "count": 1,
+            "lba": 3705601,
+            "device": 224
+          },
+          "error_description": "Error: IDNF 1 sectors at LBA = 0x00388b01 = 3705601",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 52600,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 53,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 52600,
+              "command_name": "WRITE DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 52600,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 52500,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 51900,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 3,
+          "lifetime_hours": 0,
+          "completion_registers": {
+            "error": 16,
+            "status": 81,
+            "count": 1,
+            "lba": 3705601,
+            "device": 224
+          },
+          "error_description": "Error: IDNF 1 sectors at LBA = 0x00388b01 = 3705601",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 52600,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 52500,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 51900,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 51500,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 24300,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 2,
+          "lifetime_hours": 0,
+          "completion_registers": {
+            "error": 16,
+            "status": 81,
+            "count": 1,
+            "lba": 3705601,
+            "device": 224
+          },
+          "error_description": "Error: IDNF 1 sectors at LBA = 0x00388b01 = 3705601",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 52500,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 51900,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 3705601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 51500,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 24300,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 1,
+                "lba": 0,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 24300,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "ata_smart_self_test_log": {
+    "standard": {
+      "revision": 1,
+      "count": 0
+    }
+  },
+  "spare_available": {
+    "current_percent": 100,
+    "threshold_percent": 5
+  },
+  "temperature": {
+    "current": 18,
+    "power_cycle_min": 18,
+    "power_cycle_max": 18,
+    "lifetime_min": 7,
+    "lifetime_max": 44,
+    "op_limit_max": 60,
+    "op_limit_min": 5,
+    "limit_min": -40,
+    "limit_max": 65
+  },
+  "ata_smart_data": {
+    "offline_data_collection": {
+      "status": {
+        "value": 0,
+        "string": "was never started"
+      },
+      "completion_seconds": 645
+    },
+    "self_test": {
+      "status": {
+        "value": 0,
+        "string": "completed without error",
+        "passed": true
+      },
+      "polling_minutes": {
+        "short": 2,
+        "extended": 158
+      }
+    },
+    "capabilities": {
+      "values": [
+        91,
+        3
+      ],
+      "exec_offline_immediate_supported": true,
+      "offline_is_aborted_upon_new_cmd": false,
+      "offline_surface_scan_supported": true,
+      "self_tests_supported": true,
+      "conveyance_self_test_supported": false,
+      "selective_self_test_supported": true,
+      "attribute_autosave_enabled": true,
+      "error_logging_supported": true,
+      "gp_logging_supported": true
+    }
+  },
+  "device": {
+    "protocol": "ATA"
+  },
+  "smartctl": {
+    "exit_status": 68
+  }
+}

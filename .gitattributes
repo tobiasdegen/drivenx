@@ -1,0 +1,18 @@
+# Normalize text consistently when developing across macOS, Windows and Linux.
+* text=auto
+
+# Shell and executable helper scripts must retain LF line endings.
+*.sh text eol=lf
+linux/privileged/drivenx-smartctl-helper text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Bundled native programs and artwork must never be line-ending converted.
+*.exe binary
+*.dmg binary
+*.AppImage binary
+*.png binary
+*.ico binary
+*.icns binary
+*.gz binary
+vendor/smartmontools/darwin/smartctl binary

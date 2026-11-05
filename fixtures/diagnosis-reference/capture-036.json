@@ -1,0 +1,61 @@
+{
+  "model_name": "WDC PC SN520 SDAPNUW-256G-1006",
+  "smart_status": {
+    "passed": true,
+    "nvme": {
+      "value": 0
+    }
+  },
+  "smart_support": {
+    "available": true,
+    "enabled": true
+  },
+  "nvme_smart_health_information_log": {
+    "nsid": -1,
+    "critical_warning": 0,
+    "temperature": 42,
+    "available_spare": 100,
+    "available_spare_threshold": 5,
+    "percentage_used": 3,
+    "data_units_read": 38016642,
+    "data_units_written": 24849707,
+    "host_reads": 623229524,
+    "host_writes": 392111298,
+    "controller_busy_time": 1773,
+    "power_cycles": 1722,
+    "power_on_hours": 631,
+    "unsafe_shutdowns": 95,
+    "media_errors": 0,
+    "num_err_log_entries": 6,
+    "warning_temp_time": 0,
+    "critical_comp_time": 0
+  },
+  "nvme_error_information_log": {
+    "unread": 0
+  },
+  "nvme_self_test_log": {
+    "nsid": -1,
+    "current_self_test_operation": {
+      "value": 0,
+      "string": "No self-test in progress"
+    }
+  },
+  "spare_available": {
+    "current_percent": 100,
+    "threshold_percent": 5
+  },
+  "endurance_used": {
+    "current_percent": 3
+  },
+  "temperature": {
+    "op_limit_max": 82,
+    "critical_limit_max": 86,
+    "current": 42
+  },
+  "device": {
+    "protocol": "NVMe"
+  },
+  "smartctl": {
+    "exit_status": 0
+  }
+}

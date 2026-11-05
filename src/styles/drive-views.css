@@ -1,0 +1,552 @@
+/* Full per-drive overview shown after the initial background SMART scan. */
+.device-item {
+  align-items: flex-start;
+}
+.device-item > svg {
+  margin-top: 2px;
+}
+.device-copy b {
+  font-size: 12px;
+  line-height: 1.4;
+}
+.device-copy small {
+  margin-top: 5px;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.device-status-line {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.device-status-line .status-dot {
+  flex: none;
+}
+.device-status-line:has(.status-dot.ok) {
+  color: var(--green);
+}
+.device-status-line:has(.status-dot.warnung) {
+  color: var(--orange);
+}
+.device-status-line:has(.status-dot.kritisch) {
+  color: var(--red);
+}
+.device-metrics {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.loading-status {
+  opacity: 0.7;
+}
+
+.diagnosis-advice {
+  border-top: 1px solid var(--line);
+  margin-top: 16px;
+  padding-top: 14px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.diagnosis-advice strong {
+  display: block;
+  margin-bottom: 6px;
+}
+.diagnosis-advice p {
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Grouped hardware details */
+.device-info-group {
+  margin-top: 16px;
+}
+.device-info-group h4 {
+  margin: 0 0 7px;
+  font-size: 12px;
+  color: var(--muted, #91a2bb);
+  font-weight: 650;
+  letter-spacing: 0.025em;
+}
+.device-info-group + .device-info-group {
+  padding-top: 12px;
+  border-top: 1px solid var(--line, #28374e);
+}
+.device-information .info-list dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.value-source {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 10px;
+  color: var(--muted, #91a2bb);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* Report branding preferences */
+.preferences-group input,
+.preferences-group textarea {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 7px;
+  max-width: 100%;
+  font: inherit;
+}
+.preferences-group textarea {
+  resize: vertical;
+}
+.logo-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.logo-controls button {
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+}
+.company-logo-preview {
+  max-height: 68px;
+  max-width: 220px;
+  object-fit: contain;
+  display: block;
+  margin: 10px 0;
+}
+
+/* v0.12.2: compact overview, separated hardware details, responsive grids */
+.overview-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.overview-layout > .panel {
+  height: auto;
+  min-height: 0;
+}
+.hardware-view {
+  grid-template-columns: 1fr;
+}
+.hardware-view .connection-panel {
+  grid-column: auto;
+}
+.metric-help {
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--muted);
+  background: var(--surface2);
+  border-radius: 7px;
+  padding: 11px 13px;
+  margin-bottom: 12px;
+}
+@media (max-width: 1150px) {
+  .overview-layout {
+    grid-template-columns: 1fr;
+  }
+  .hardware-view .connection-steps {
+    flex-direction: column;
+  }
+}
+@media (max-width: 720px) {
+  .shell {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+  .sidebar {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    width: 100%;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    padding: 13px 17px;
+  }
+  .sidebar-title {
+    padding: 0 17px 8px;
+  }
+  .device-list {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 12px 10px;
+    flex: initial;
+  }
+  .device-item {
+    min-width: 205px;
+    width: 205px;
+    flex: none;
+  }
+  .sidebar-foot {
+    padding: 6px 15px;
+  }
+  .main {
+    height: auto;
+    min-height: 65vh;
+    overflow: visible;
+    width: 100%;
+    padding: 16px;
+  }
+  .main > .topbar {
+    top: 0;
+    margin-top: 0;
+    padding-top: 12px;
+  }
+  .stats,
+  .quick-counts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tabs {
+    gap: 16px;
+  }
+  .header-actions {
+    gap: 6px;
+  }
+  .header-actions .button {
+    padding: 8px;
+  }
+  .table-head {
+    flex-wrap: wrap;
+  }
+  .attribute-tools {
+    flex-wrap: wrap;
+  }
+  .search input {
+    width: 140px;
+  }
+}
+@media (max-width: 430px) {
+  .stats,
+  .quick-counts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .stat {
+    padding: 10px;
+  }
+  .stat-value {
+    font-size: 17px;
+  }
+  .panel {
+    padding: 14px;
+  }
+  .drive-heading {
+    gap: 9px;
+  }
+  .drive-name h2 {
+    font-size: 15px;
+  }
+}
+
+/* v0.12.3: improved SMART header hints, hardware layout and modal hierarchy */
+.info-list > div {
+  display: grid;
+  grid-template-columns: minmax(170px, 230px) minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.info-list dd {
+  text-align: right;
+  justify-self: end;
+  max-width: min(100%, 520px);
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+.device-information-hardware {
+  max-width: 980px;
+}
+.hardware-view {
+  justify-items: start;
+}
+.hardware-view .device-information {
+  width: min(100%, 980px);
+}
+.hardware-view .connection-panel {
+  width: 100%;
+}
+.connection-target {
+  border-color: #3f5c86;
+}
+.connection-target .connection-index {
+  background: var(--green);
+  color: #082117;
+}
+.attribute-detail {
+  width: min(720px, 100%);
+  padding: 0;
+  overflow: hidden;
+}
+.attribute-detail-header {
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.attribute-detail-header h3 {
+  margin: 0 36px 8px 0;
+  font-size: 24px;
+  line-height: 1.2;
+}
+.attribute-detail-subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.attribute-detail-section {
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--line);
+}
+.attribute-detail-section h4 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--text);
+}
+.attribute-detail-section p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.attribute-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px 28px 28px;
+}
+.attribute-detail-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface2);
+  padding: 16px;
+}
+.attribute-detail-key {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.attribute-detail-card strong {
+  display: block;
+  font-size: 22px;
+  line-height: 1.3;
+}
+.attribute-detail-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.attribute-detail-close {
+  right: 18px;
+  top: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+}
+.attribute-detail-close:hover {
+  background: var(--surface2);
+}
+@media (max-width: 900px) {
+  .attribute-detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .info-list > div {
+    grid-template-columns: minmax(135px, 190px) minmax(0, 1fr);
+  }
+}
+@media (max-width: 620px) {
+  .info-list > div {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .info-list dd {
+    text-align: left;
+    justify-self: start;
+    max-width: 100%;
+  }
+  .attribute-detail-header,
+  .attribute-detail-section,
+  .attribute-detail-grid {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .attribute-detail-header h3 {
+    font-size: 20px;
+  }
+}
+
+/* v0.12.4 — concise hardware cards instead of stretched key/value table */
+.hardware-view {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+}
+.hardware-view .hardware-summary-panel {
+  width: 100%;
+  max-width: none;
+}
+.hardware-summary-panel h3 {
+  margin-bottom: 18px;
+}
+.hardware-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr));
+  gap: 12px;
+}
+.hardware-info-card {
+  min-width: 0;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+}
+.hardware-info-card span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.hardware-info-card strong {
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.hardware-technical {
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+}
+.hardware-technical summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 5px 0;
+}
+.hardware-technical summary:hover {
+  color: var(--text);
+}
+.hardware-technical-list {
+  margin: 10px 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 12px;
+}
+.hardware-technical-list > div {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--surface2);
+  min-width: 0;
+}
+.hardware-technical-list dt {
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+.hardware-technical-list dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+/* Table headings no longer need per-column tooltips: ATA details are in the dialog. */
+.table-scroll {
+  scroll-padding-top: 14px;
+}
+
+/* History trend comparison */
+.history-trends {
+  border-top: 1px solid var(--line);
+  margin-top: 18px;
+  padding-top: 18px;
+}
+.history-trends h4 {
+  margin: 0 0 12px;
+}
+.history-trend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+}
+.history-trend-card {
+  display: grid;
+  gap: 7px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface2);
+  min-width: 0;
+}
+.history-trend-card span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.history-trend-card strong {
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+.history-trend-card small {
+  color: var(--muted);
+  font-size: 11px;
+}
+.history-reset {
+  color: var(--orange);
+}
+.device-status-line:has(.status-dot.warning) {
+  color: var(--orange);
+}
+.device-status-line:has(.status-dot.critical),
+.device-status-line:has(.status-dot.defective) {
+  color: var(--red);
+}
+.device-status-line:has(.status-dot.ok) {
+  color: var(--green);
+}
+
+/* A missing table is not a zero-error diagnosis. */
+.empty-details-state {
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.empty-details-state p {
+  margin: 0 0 8px;
+}
+.empty-details-state details {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+/* Grouping is shown only when the host can distinguish internal from external. */
+.drive-sidebar-group-heading {
+  margin: 18px 12px 7px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.sidebar-measured {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 2px;
+}

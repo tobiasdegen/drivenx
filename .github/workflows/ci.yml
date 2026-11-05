@@ -1,0 +1,65 @@
+name: DriveNX CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: Checks and package (${{ matrix.name }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: windows-x64
+            os: windows-2025
+            command: npm run release:win
+            artifacts: |
+              release/DriveNX-Setup-*-x64.exe
+              release/DriveNX-Portable-*-x64.exe
+          - name: macos-arm64
+            os: macos-15
+            command: npm run dist:mac
+            artifacts: |
+              release/*.dmg
+              release/*.zip
+          - name: linux-x64
+            os: ubuntu-22.04
+            command: npm run dist:linux
+            artifacts: |
+              release/*-linux-x64.AppImage
+              release/*-linux-x64.deb
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      # Every release command already runs the complete release:check before packaging.
+      # One native matrix job per target avoids running the same validation twice.
+      # No signing identities or notarization credentials are used in CI.
+      # The macOS app is deliberately unsigned and must never be published as-is.
+      - name: Validate, package and smoke-test
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: ${{ matrix.command }}
+      - name: Upload unsigned test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: drivenx-${{ matrix.name }}
+          path: ${{ matrix.artifacts }}
+          if-no-files-found: error
+          retention-days: 5

@@ -1,0 +1,686 @@
+/* Keep navigation fixed in the app window; only the content pane scrolls. */
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+.shell {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+.sidebar {
+  height: 100vh;
+  min-height: 0;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+.device-list {
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+.main {
+  height: 100vh;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  max-width: none;
+}
+/* v0.2: compact technician information hierarchy */
+.sidebar {
+}
+.main {
+}
+.topbar {
+  margin-bottom: 23px;
+}
+h1 {
+  margin: 0;
+}
+.drive-heading {
+}
+.drive-icon {
+}
+.stats {
+  gap: 11px;
+  margin-bottom: 12px;
+}
+.stat {
+}
+.stat-value {
+  min-height: 31px;
+}
+.quick-counts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.quick-counts > div {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  align-items: center;
+}
+.quick-counts span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.quick-counts strong {
+}
+.panel h3 {
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+.finding {
+  line-height: 1.45;
+  align-items: center;
+}
+.finding svg {
+  flex: none;
+}
+.findings {
+  gap: 8px;
+}
+.system-line,
+.preferences {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.preferences {
+  margin-top: 13px;
+  justify-content: space-between;
+}
+.preferences button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+}
+.caution-text {
+  font-size: 12px;
+  color: var(--orange);
+}
+.attention-row td {
+  color: var(--orange);
+}
+.table-head h3 {
+  margin: 0;
+}
+.panel {
+}
+.sidebar-foot {
+  padding: 14px 20px;
+}
+.device-item {
+}
+.tabs {
+}
+@media (max-width: 1150px) {
+  .quick-counts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .two-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.nav-extras {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.nav-extras button {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  text-align: left;
+  padding: 7px 0;
+  font-size: 12px;
+}
+.nav-extras button:hover {
+  color: var(--blue);
+}
+.settings-panel {
+  max-width: 850px;
+}
+.settings-controls {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+  max-width: 560px;
+}
+.settings-controls label {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.settings-controls select,
+.select-file input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  padding: 12px;
+  border-radius: 8px;
+}
+.select-file {
+  display: flex;
+  gap: 8px;
+}
+.settings-controls > .button {
+  justify-self: start;
+}
+.settings-note {
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.settings-shortcut {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 0 0;
+  font-size: 12px;
+}
+.settings-shortcut:hover {
+  color: var(--text);
+}
+.attribute-tools {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.attribute-switch {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.attribute-switch input {
+  accent-color: var(--blue);
+}
+.attribute-hint {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: 8px;
+  color: var(--muted);
+  cursor: help;
+}
+.preferences-window {
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+}
+.preferences-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 30px;
+  border-bottom: 1px solid var(--line);
+}
+.preferences-header h1 {
+  font-size: 21px;
+}
+.preferences-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 23px 30px;
+}
+.preferences-group {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  margin-bottom: 17px;
+}
+.preferences-group h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  margin: 0 0 16px;
+}
+.pref-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(180px, 1.2fr);
+  align-items: center;
+  gap: 15px;
+  margin: 11px 0;
+}
+.pref-row label {
+  font-size: 13px;
+  color: var(--muted);
+}
+.pref-row select,
+.pref-file input {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 11px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+.pref-file {
+  display: flex;
+  gap: 9px;
+  margin: 12px 0;
+}
+.pref-file button {
+  border: 1px solid var(--line);
+  background: var(--surface2);
+  color: var(--text);
+  border-radius: 7px;
+  padding: 10px;
+}
+.pref-details {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 9px 12px;
+  margin-top: 16px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.pref-details code {
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: 11px;
+}
+.pref-footer {
+  border-top: 1px solid var(--line);
+  padding: 14px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+}
+.pref-success {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--green);
+  font-size: 12px;
+}
+.pref-error {
+  color: var(--red);
+  font-size: 12px;
+  margin: 0;
+  padding: 8px 30px;
+}
+
+/* SMART attribute view: keep headings/search fixed while only table body scrolls. */
+.table-scroll {
+  max-height: min(58vh, 680px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+.table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.readout-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.readout-note svg {
+  flex: none;
+}
+
+/* Verified host connection hierarchy; do not invent USB bridge details. */
+.connection-panel {
+  grid-column: 1/-1;
+}
+.connection-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 10px;
+}
+.connection-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface2);
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.connection-index {
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: var(--blue-bg);
+  color: var(--blue);
+  font-size: 11px;
+}
+.connection-step strong {
+  display: block;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.connection-step small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.connection-caption {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 12px 0 0;
+  line-height: 1.5;
+}
+/* Compact optional technician details; no extra columns in the overview. */
+.table-scroll tbody tr {
+  cursor: pointer;
+}
+.table-scroll tbody tr:hover {
+}
+.attribute-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #0009;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.attribute-detail {
+  position: relative;
+  max-height: 85vh;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 15px 55px #0005;
+  line-height: 1.6;
+}
+.attribute-detail h3 {
+  padding-right: 35px;
+}
+.attribute-detail p {
+  color: var(--muted);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.attribute-detail-close {
+  position: absolute;
+  background: none;
+  border: 0;
+  color: var(--text);
+  font-size: 26px;
+}
+
+/* v0.7.1: persistent primary actions; content alone scrolls. */
+.main > .topbar {
+  position: sticky;
+  z-index: 25;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.temperature-level {
+  display: inline-flex;
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 650;
+  color: var(--muted);
+  cursor: help;
+}
+.temp-normal {
+  color: var(--green);
+}
+.temp-elevated,
+.temp-low {
+  color: var(--orange);
+}
+.temp-high {
+  color: var(--red);
+}
+.hours-stat {
+  position: relative;
+  outline-offset: 2px;
+}
+.hours-stat:focus-visible {
+  outline: 2px solid var(--blue);
+}
+.hours-tooltip {
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 7px);
+  left: 0;
+  max-width: 310px;
+  min-width: 230px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface2);
+  box-shadow: 0 7px 20px #0004;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  transition: opacity 0.12s;
+}
+.hours-stat:hover .hours-tooltip,
+.hours-stat:focus-visible .hours-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+@media (max-width: 1250px) {
+  .main > .topbar {
+    top: -25px;
+    padding-top: 25px;
+    margin-top: -25px;
+  }
+}
+@media (max-width: 850px) {
+  .main > .topbar {
+    top: -18px;
+    padding-top: 18px;
+    margin-top: -18px;
+  }
+}
+
+/* One entry point in the toolbar; all driver selection lives in its modal. */
+.access-mode-toolbar {
+  white-space: nowrap;
+}
+.access-mode-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(1, 8, 19, 0.75);
+  padding: 20px;
+}
+.access-mode-dialog {
+  width: min(580px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 18px 65px rgba(0, 0, 0, 0.45);
+  background: var(--bg);
+}
+.access-mode-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: flex-start;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.access-mode-dialog-header h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+  color: var(--text);
+}
+.access-mode-dialog-header p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.access-mode-close {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 4px;
+}
+.access-mode-dialog-body {
+  display: grid;
+  gap: 12px;
+  padding: 19px 22px;
+}
+.access-mode-dialog-body label {
+  font-weight: 650;
+  font-size: 12px;
+}
+.access-mode-dialog-body select {
+  min-width: 0;
+  max-width: none;
+  width: 100%;
+  color: var(--text);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  padding: 10px;
+  border-radius: 7px;
+}
+.access-mode-dialog-body p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 0;
+}
+.access-mode-dialog-body .access-mode-warning {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.access-mode-dialog-footer {
+  border-top: 1px solid var(--line);
+  padding: 14px 22px;
+  display: flex;
+  gap: 9px;
+  justify-content: flex-end;
+}
+
+.access-mode-section {
+  display: grid;
+  gap: 10px;
+  padding: 2px 0 16px;
+}
+.access-mode-section + .access-mode-section {
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.access-mode-section h4 {
+  color: var(--text);
+  font-size: 14px;
+  margin: 0;
+}
+.access-mode-section .button {
+  justify-self: start;
+}
+.access-mode-device-name {
+  color: var(--text) !important;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 700px) {
+  .access-mode-toolbar {
+    padding-inline: 10px;
+  }
+  .access-mode-dialog {
+    max-height: calc(100dvh - 24px);
+  }
+  .access-mode-dialog-header,
+  .access-mode-dialog-body {
+    padding-inline: 15px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .access-mode-toolbar-label {
+    display: none;
+  }
+  .access-mode-toolbar {
+    min-width: 38px;
+  }
+}
+
+/* Before the first SMART read, clarify ambiguous SATA/NVMe USB bridges. */
+.usb-media-choice-dialog .access-mode-dialog-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.usb-media-options {
+  border: 0;
+  margin: 0.8rem 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+.usb-media-option {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.75rem;
+  border: 1px solid var(--border, #344257);
+  border-radius: 8px;
+}
+.usb-media-option:has(input:checked) {
+  border-color: var(--accent, #548be3);
+  background: var(--panel-hover, #1a2b42);
+}
+.usb-media-option input {
+  flex: none;
+}

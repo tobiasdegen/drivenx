@@ -1,0 +1,457 @@
+/* Compact drive overview: respond to the available dashboard width, not window width. */
+.overview-dashboard {
+  margin-bottom: 16px;
+  container-type: inline-size;
+}
+.overview-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.overview-kpis--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.overview-kpi {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 13px 15px 12px;
+  min-width: 0;
+}
+.overview-kpi-label {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.overview-kpi-label svg {
+  color: #82a7d7;
+  flex: none;
+}
+.overview-kpi-value {
+  display: block;
+  font:
+    700 21px ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  margin-top: 8px;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.overview-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 10px;
+  align-items: start;
+}
+/* The assessment spans the full width. Hardware identity and metrics are a
+   separate balanced row, so a short healthy assessment never leaves a void. */
+.overview-assessment {
+  margin-bottom: 10px;
+}
+.overview-content-grid--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+.overview-side-panels {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+/* Keep the essentials visible while reserving the full hardware details for their tab. */
+.overview-device-information .device-info-group {
+  margin-top: 0;
+}
+.overview-device-information .info-list > div {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 12px;
+}
+.overview-device-information .info-list dt,
+.overview-device-information .info-list dd {
+  min-width: 0;
+}
+.overview-content-grid > .panel,
+.overview-side-panels > .panel {
+  padding: 15px 17px;
+}
+.overview-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 13px;
+}
+.overview-panel-heading svg {
+  flex: none;
+  color: #82a7d7;
+}
+.overview-assessment.has-warnings {
+  border-color: var(--orange);
+}
+.overview-assessment.has-warnings .overview-panel-heading svg {
+  color: var(--orange);
+}
+.overview-assessment.has-critical {
+  border-color: var(--red);
+}
+.overview-assessment.has-critical .overview-panel-heading svg {
+  color: var(--red);
+}
+.overview-finding-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 9px;
+}
+.overview-finding-list li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.overview-finding-list li svg {
+  flex: none;
+  margin-top: 1px;
+}
+.overview-finding-list .finding-kritisch {
+  color: var(--red);
+}
+.overview-finding-list .finding-warnung {
+  color: var(--orange);
+}
+.overview-assessment-result {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 0;
+}
+.overview-more-button {
+  border: none;
+  background: transparent;
+  color: #93b8ff;
+  padding: 8px 0 0;
+  text-align: left;
+  font-size: 12px;
+}
+.overview-more-button:hover {
+  text-decoration: underline;
+}
+.overview-readout-warning {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: var(--orange);
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 9px 0 0;
+}
+.overview-readout-warning svg {
+  flex: none;
+  margin-top: 1px;
+}
+.overview-readout-details {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.overview-readout-details summary {
+  cursor: pointer;
+  color: var(--text);
+}
+.overview-readout-details p {
+  margin: 5px 0 0;
+  overflow-wrap: anywhere;
+}
+.overview-advice {
+  border-top: 1px solid var(--line);
+  margin-top: 13px;
+  padding-top: 11px;
+  font-size: 12px;
+}
+.overview-advice > strong {
+  font-size: 11px;
+}
+.overview-advice p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.overview-io-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.overview-io-grid > div {
+  min-width: 0;
+}
+.overview-io-grid > div + div {
+  border-left: 1px solid var(--line);
+  padding-left: 13px;
+}
+.overview-io-grid span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.overview-io-grid span svg {
+  flex: none;
+  color: #82a7d7;
+}
+.overview-io-grid strong {
+  display: block;
+  margin-top: 7px;
+  font:
+    700 21px ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.overview-counter-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 18px;
+}
+.overview-counter-list > div {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  padding: 9px 0;
+}
+.overview-counter-list dt {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.overview-counter-list dd {
+  margin: 0;
+  font:
+    700 13px ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.overview-counter-note {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.4;
+  margin: 10px 0 0;
+}
+/* Container queries also handle a manually resized sidebar or narrow app window. */
+@container (max-width: 850px) {
+  .overview-content-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .overview-kpis--four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container (max-width: 580px) {
+  .overview-kpis--three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .overview-kpis--three > :last-child {
+    grid-column: 1 / -1;
+  }
+  .overview-kpi {
+    padding: 11px;
+  }
+  .overview-kpi-value,
+  .overview-io-grid strong {
+    font-size: 18px;
+  }
+  .overview-counter-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .overview-device-information .info-list > div {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+@container (max-width: 360px) {
+  .overview-kpis--three,
+  .overview-kpis--four,
+  .overview-io-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .overview-io-grid > div + div {
+    border-left: 0;
+    padding: 10px 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .overview-device-information .info-list > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .overview-device-information .info-list dd {
+    justify-self: start;
+    text-align: left;
+  }
+}
+
+/* Persistent, low-profile indication of an incomplete SMART readout in every tab. */
+.drive-status-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.readout-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--orange);
+  font-size: 11px;
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .drive-heading {
+    flex-wrap: wrap;
+  }
+  .drive-status-group {
+    margin-left: 56px;
+    justify-content: flex-start;
+  }
+}
+
+/* Independent diagnostic domains: a connection issue never implies bad NAND. */
+.diagnosis-domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0 0 12px;
+}
+
+/* The diagnosis remains prominent; measurement context stays secondary. */
+.overview-kpi-label {
+  text-transform: none;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.overview-kpi-context {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.readout-coverage {
+  position: relative;
+  max-width: 100%;
+}
+.readout-coverage summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12px;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+.readout-coverage summary::-webkit-details-marker {
+  display: none;
+}
+.readout-coverage.is-incomplete summary {
+  color: var(--orange);
+}
+.readout-coverage-content {
+  position: absolute;
+  z-index: 25;
+  top: calc(100% + 5px);
+  right: 0;
+  width: min(360px, 85vw);
+  max-height: 310px;
+  overflow-y: auto;
+  padding: 12px 15px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px #0003;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.readout-coverage-content p {
+  margin: 0 0 8px;
+}
+.readout-coverage-content ul {
+  margin: 3px 0 8px;
+  padding-left: 18px;
+}
+@media (max-width: 700px) {
+  .readout-coverage-content {
+    right: auto;
+    left: 0;
+  }
+}
+
+/* Scannable diagnostic domains and one-line evidence cards. */
+.diagnosis-domains {
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.diagnosis-domains span {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface2);
+  padding: 8px 11px;
+  color: var(--text);
+  font-weight: 600;
+}
+.overview-finding-list {
+  gap: 7px;
+}
+.overview-finding-list li {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface2);
+  padding: 11px 12px;
+  line-height: 1.6;
+  color: var(--text);
+}
+.overview-finding-list li.finding-warnung {
+  border-left: 3px solid var(--orange);
+}
+.overview-finding-list li.finding-kritisch {
+  border-left: 3px solid var(--red);
+}
+.overview-advice {
+  margin-top: 14px;
+  padding-top: 13px;
+}
+
+.overview-finding-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 3px;
+}
+.overview-finding-copy strong {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+}
+.overview-finding-copy > span {
+  color: var(--muted);
+  line-height: 1.55;
+}

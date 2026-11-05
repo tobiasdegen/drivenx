@@ -1,0 +1,82 @@
+{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      5
+    ],
+    "pre_release": false,
+    "svn_revision": "5714",
+    "platform_info": "x86_64-w64-mingw32-w11-b26300",
+    "build_info": "(AppVeyor)",
+    "argv": [
+      "smartctl",
+      "-B",
+      "C:\\Program Files\\DriveNX\\resources\\smartmontools\\drivedb.h",
+      "-a",
+      "-j",
+      "-d",
+      "scsi",
+      "/dev/sdc"
+    ],
+    "exit_status": 4
+  },
+  "local_time": {
+    "time_t": 1792604165,
+    "asctime": "Wed Oct 21 19:36:05 2026 MS"
+  },
+  "device": {
+    "name": "/dev/sdc",
+    "info_name": "/dev/sdc",
+    "type": "scsi",
+    "protocol": "SCSI"
+  },
+  "scsi_vendor": "Samsung",
+  "scsi_product": "Portable SSD T1",
+  "model_name": "Samsung Portable SSD T1",
+  "scsi_model_name": "Samsung Portable SSD T1",
+  "scsi_revision": "0",
+  "scsi_version": "SPC-4",
+  "user_capacity": {
+    "blocks": 488397168,
+    "bytes": 250059350016
+  },
+  "logical_block_size": 512,
+  "scsi_lb_provisioning": {
+    "name": "fully provisioned",
+    "value": 0,
+    "management_enabled": {
+      "name": "LBPME",
+      "value": -1
+    },
+    "read_zeros": {
+      "name": "LBPRZ",
+      "value": 0
+    }
+  },
+  "rotation_rate": 0,
+  "form_factor": {
+    "scsi_value": 3,
+    "name": "2.5 inches"
+  },
+  "logical_unit_id": "0x5000000000000001",
+  "serial_number": "REDACTED-samsung-t1",
+  "device_type": {
+    "scsi_terminology": "Peripheral Device Type [PDT]",
+    "scsi_value": 0,
+    "name": "disk"
+  },
+  "smart_support": {
+    "available": false
+  },
+  "temperature": {
+    "current": 0,
+    "drive_trip": 0
+  },
+  "seagate_farm_log": {
+    "supported": false
+  }
+}

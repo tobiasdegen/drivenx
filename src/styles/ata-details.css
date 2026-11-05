@@ -1,0 +1,207 @@
+/* Detailed read-only smartctl -x sections live in their specialist tabs. */
+.ata-extra-panel {
+  margin-top: 14px;
+}
+.ata-extra-panel > .panel-description {
+  margin-bottom: 14px;
+}
+.ata-extra-group {
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+.ata-extra-group > summary,
+.ata-error-detail > summary {
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 650;
+}
+.ata-extra-group > .table-scroll,
+.ata-error-detail > .table-scroll {
+  margin-top: 12px;
+}
+.ata-details-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 24px;
+  margin: 0;
+}
+.ata-details-list > div {
+  min-width: 0;
+  padding: 10px 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.ata-details-list dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+.ata-details-list dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+.ata-data-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+.ata-data-attention {
+  color: var(--orange);
+}
+.ata-temperature-samples {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(66px, 1fr));
+  gap: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+.ata-temperature-samples span {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 6px;
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+}
+.ata-temperature-samples small {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+}
+.ata-error-detail {
+  margin-top: 9px;
+  font-size: 12px;
+  max-width: 100%;
+}
+.ata-error-detail > strong {
+  display: block;
+  margin: 10px 0 5px;
+}
+.ata-error-registers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0 0 10px;
+}
+.ata-error-registers > div {
+  display: flex;
+  gap: 5px;
+  background: var(--surface2);
+  border-radius: 4px;
+  padding: 5px 7px;
+}
+.ata-error-registers dt {
+  color: var(--muted);
+}
+.ata-error-registers dd {
+  margin: 0;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.ata-test-summary {
+  margin-bottom: 13px;
+}
+@media (max-width: 720px) {
+  .ata-details-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Paket 30: progressive disclosure of large technical ATA logs. */
+.ata-temperature-overview {
+  margin-top: 14px;
+}
+.ata-temperature-overview h4 {
+  margin: 0 0 5px;
+  font-size: 13px;
+}
+.ata-temperature-overview .ata-data-note {
+  margin: 5px 0 12px;
+}
+.ata-temperature-bands {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.ata-temperature-band {
+  min-width: 0;
+  background: var(--surface2);
+  border-radius: 7px;
+  padding: 10px;
+}
+.ata-temperature-band > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+  align-items: baseline;
+  font-size: 12px;
+}
+.ata-temperature-band strong {
+  font-variant-numeric: tabular-nums;
+}
+.ata-temperature-bar {
+  display: block;
+  height: 5px;
+  border-radius: 4px;
+  margin-top: 9px;
+  background: var(--line);
+  overflow: hidden;
+}
+.ata-temperature-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--blue);
+  border-radius: inherit;
+}
+.ata-error-table > thead th:first-child,
+.ata-error-main-row > td:first-child {
+  width: 55px;
+}
+.ata-error-table > thead th:nth-child(2),
+.ata-error-main-row > td:nth-child(2) {
+  width: 140px;
+}
+.ata-error-main-row > td {
+  vertical-align: top;
+}
+.ata-error-detail-row > td {
+  padding-top: 0;
+  padding-bottom: 12px;
+}
+.ata-error-detail-row .ata-error-detail {
+  margin-left: 0;
+}
+.ata-error-detail-row h5 {
+  margin: 13px 0 7px;
+}
+.ata-command-list {
+  display: grid;
+  gap: 9px;
+  margin: 8px 0 12px;
+}
+.ata-command {
+  min-width: 0;
+  border-radius: 6px;
+  background: var(--surface2);
+  padding: 11px 12px;
+}
+.ata-command > strong {
+  font-size: 12px;
+}
+.ata-command .ata-error-registers {
+  margin: 8px 0 0;
+}
+@media (max-width: 900px) {
+  .ata-temperature-bands {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .ata-temperature-bands {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
