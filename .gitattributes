@@ -1,5 +1,8 @@
 # Normalize text consistently when developing across macOS, Windows and Linux.
-* text=auto
+# Keep all versioned text as LF on every platform.
+# This is critical for pinned raw-file SHA-256 checks (drivedb.h, usb.ids)
+# and byte-for-byte generated USB-ID indexes.
+* text=auto eol=lf
 
 # Shell and executable helper scripts must retain LF line endings.
 *.sh text eol=lf

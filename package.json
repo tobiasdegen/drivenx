@@ -23,11 +23,11 @@
     "licenses:sync": "node scripts/sync-third-party-versions.js --write",
     "check:resources": "node scripts/check-release.js",
     "release:check": "npm test && npm run audit:production && npm run licenses:check && npm run usbids:check && npm run check:resources && npm run format:check && npm run lint && npm run build",
-    "release:win": "npm run release:check && electron-builder --win nsis portable --x64 && npm run smoke:win",
-    "dist:win:dir": "npm run build && electron-builder --win dir --x64 && npm run smoke:win -- --target=dir",
-    "dist:mac": "npm run release:check && node scripts/check-mac-smartctl.js && electron-builder --mac dmg zip --arm64 && npm run smoke:mac",
-    "dist:linux": "npm run release:check && electron-builder --linux AppImage deb --x64 && npm run smoke:linux",
-    "dist:linux:dir": "npm run build && electron-builder --linux dir --x64 && npm run smoke:linux -- --target=dir",
+    "release:win": "npm run release:check && electron-builder --win nsis portable --x64 --publish never && npm run smoke:win",
+    "dist:win:dir": "npm run build && electron-builder --win dir --x64 --publish never && npm run smoke:win -- --target=dir",
+    "dist:mac": "npm run release:check && node scripts/check-mac-smartctl.js && electron-builder --mac dmg zip --arm64 --publish never && npm run smoke:mac",
+    "dist:linux": "npm run release:check && electron-builder --linux AppImage deb --x64 --publish never && npm run smoke:linux",
+    "dist:linux:dir": "npm run build && electron-builder --linux dir --x64 --publish never && npm run smoke:linux -- --target=dir",
     "smoke:win": "node scripts/smoke-windows-package.js",
     "smoke:mac": "node scripts/smoke-mac-package.js",
     "smoke:linux": "node scripts/smoke-linux-package.js",
@@ -225,7 +225,8 @@
             "io.drivenx.smartctl.policy"
           ]
         }
-      ]
+      ],
+      "maintainer": "Tobias Degen <tobidegen1@outlook.de>"
     },
     "deb": {
       "depends": [

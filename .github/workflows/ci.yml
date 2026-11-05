@@ -36,8 +36,8 @@ jobs:
             os: ubuntu-22.04
             command: npm run dist:linux
             artifacts: |
-              release/*-linux-x64.AppImage
-              release/*-linux-x64.deb
+              release/*-linux-*.AppImage
+              release/*-linux-*.deb
     steps:
       - name: Checkout
         uses: actions/checkout@v4
