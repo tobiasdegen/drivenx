@@ -40,9 +40,9 @@ jobs:
               release/*-linux-*.deb
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '24'
           cache: npm
@@ -57,7 +57,7 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
         run: ${{ matrix.command }}
       - name: Upload unsigned test artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: drivenx-${{ matrix.name }}
           path: ${{ matrix.artifacts }}

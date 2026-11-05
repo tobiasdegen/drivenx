@@ -65,6 +65,21 @@ test('Linux artifacts required for full release', (t) => {
   assert.ok(problems.some((problem) => problem.includes('.deb')));
 });
 
+test('Linux full release accepts AppImage x86_64 and DEB amd64 artifact names', (t) => {
+  const { root, asarApi } = fixture(t);
+  const release = path.join(root, 'release');
+  const appImage = path.join(release, `DriveNX-${APP_VERSION}-linux-x86_64.AppImage`);
+  const deb = path.join(release, `DriveNX-${APP_VERSION}-linux-amd64.deb`);
+  fs.writeFileSync(appImage, 'test');
+  fs.writeFileSync(deb, 'test');
+
+  assert.deepEqual(checkLinuxPackage({ root, target: 'all', asarApi }), []);
+  fs.rmSync(deb);
+  assert.ok(
+    checkLinuxPackage({ root, target: 'all', asarApi }).some((issue) => issue.includes('.deb')),
+  );
+});
+
 test('DEB installer installs and removes the restricted helper, with dependencies', () => {
   const project = path.join(ELECTRON_SOURCE_DIR, '..');
   const configuration = require('../../package.json').build;

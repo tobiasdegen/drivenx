@@ -86,8 +86,9 @@ function checkLinuxPackage({
     }
   }
   if (target === 'all') {
-    required(path.join(output, `DriveNX-${version}-linux-x64.AppImage`));
-    required(path.join(output, `DriveNX-${version}-linux-x64.deb`));
+    // electron-builder's Linux artifact arch names differ by target (AppImage vs DEB).
+    required(path.join(output, `DriveNX-${version}-linux-x86_64.AppImage`));
+    required(path.join(output, `DriveNX-${version}-linux-amd64.deb`));
   }
   return issues;
 }
