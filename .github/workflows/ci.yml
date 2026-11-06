@@ -1,8 +1,7 @@
 name: DriveNX CI
 
+# Testpakete bewusst nur auf Anforderung bauen, nicht bei jedem Commit.
 on:
-  push:
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -28,7 +27,7 @@ jobs:
               release/DriveNX-Portable-*-x64.exe
           - name: macos-arm64
             os: macos-15
-            command: npm run dist:mac
+            command: bash scripts/build-mac-ci.sh
             artifacts: |
               release/*.dmg
               release/*.zip
@@ -48,15 +47,13 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      # Every release command already runs the complete release:check before packaging.
-      # One native matrix job per target avoids running the same validation twice.
-      # No signing identities or notarization credentials are used in CI.
-      # The macOS app is deliberately unsigned and must never be published as-is.
+      # macOS-Testpakete werden vollständig Ad-hoc-signiert, jedoch NICHT notarisiert.
+      # Die offizielle Developer-ID-Signierung erhält später einen getrennten Freigabepfad.
       - name: Validate, package and smoke-test
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
         run: ${{ matrix.command }}
-      - name: Upload unsigned test artifacts
+      - name: Upload test artifacts
         uses: actions/upload-artifact@v6
         with:
           name: drivenx-${{ matrix.name }}
