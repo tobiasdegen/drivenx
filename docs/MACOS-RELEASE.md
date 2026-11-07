@@ -12,17 +12,18 @@ This procedure distributes **DriveNX for Apple Silicon (ARM64), macOS 15+** outs
    ```
 
    Look for **Developer ID Application: ... (TEAMID)**. A public `.cer` by itself is insufficient without the private key that generated the CSR.
+
 3. Export the certificate **and private key** from Keychain Access as a password-protected `.p12`. Do not add it to Git.
 4. In [Apple Account](https://account.apple.com/) open **Sign-In and Security → App-Specific Passwords** and generate a password named `DriveNX Notarization`. Use your own Apple ID and an app-specific password; **never use your normal Apple Account password**. An App Store Connect API key or its prior approval is not necessary for this workflow.
-5. Configure these five GitHub Actions *repository secrets* under **Settings → Secrets and variables → Actions**:
+5. Configure these five GitHub Actions _repository secrets_ under **Settings → Secrets and variables → Actions**:
 
-   | Secret                        | Value                                                      |
-   | ----------------------------- | ---------------------------------------------------------- |
-   | `MAC_CSC_LINK`                | Base64 encoding of the exported `.p12` (one line)          |
-   | `MAC_CSC_KEY_PASSWORD`        | `.p12` export password                                     |
-   | `APPLE_ID`                    | Apple Account email address used for notarization          |
-   | `APPLE_APP_SPECIFIC_PASSWORD` | App-specific password generated in the Apple Account       |
-   | `APPLE_TEAM_ID`               | Team ID of the Developer ID Application certificate        |
+   | Secret                        | Value                                                |
+   | ----------------------------- | ---------------------------------------------------- |
+   | `MAC_CSC_LINK`                | Base64 encoding of the exported `.p12` (one line)    |
+   | `MAC_CSC_KEY_PASSWORD`        | `.p12` export password                               |
+   | `APPLE_ID`                    | Apple Account email address used for notarization    |
+   | `APPLE_APP_SPECIFIC_PASSWORD` | App-specific password generated in the Apple Account |
+   | `APPLE_TEAM_ID`               | Team ID of the Developer ID Application certificate  |
 
    On macOS, copy the certificate safely into the clipboard with `base64 < ~/Downloads/DriveNX-Developer-ID.p12 | tr -d '\n' | pbcopy` and paste into `MAC_CSC_LINK`. Obtain the Team ID from `security find-identity -v -p codesigning` (for the intended Developer ID certificate). **Never paste `.p12` contents, passwords, or tokens into a commit, issue, or chat.** After setting the certificate secret, clear the clipboard with `pbcopy < /dev/null`. Store the original `.p12` and password securely, and revoke an exposed app-specific password through your Apple Account.
 
@@ -37,6 +38,7 @@ This procedure distributes **DriveNX for Apple Silicon (ARM64), macOS 15+** outs
    ```
 
    Only create this tag if it does not already exist, the working tree is clean and the version really is `0.1.0`. Do not move or replace an already published release tag.
+
 3. In GitHub **Actions → DriveNX macOS Release → Run workflow**, enter the existing tag (`v0.1.0`). The workflow checks out that tag, checks its version, imports the signing identity via `CSC_LINK`, signs and notarizes both ARM64 macOS artifacts, verifies the sealed bundle, verifies Gatekeeper acceptance, and generates SHA-256 checksums.
 4. A successful run creates a **draft release** containing the DMG, ZIP and `SHA256SUMS-macos.txt`. Check the release assets, notes and licensing before choosing **Publish release**. The workflow never publishes automatically.
 5. Test installation from the downloaded DMG on a separate, clean Mac with Gatekeeper enabled. Check start, SMART diagnostics and required authorization. There is no Mac App Store submission in this flow.
