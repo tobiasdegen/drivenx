@@ -29,7 +29,7 @@ Windows packages include `vendor/smartmontools/win32/smartctl.exe`, the DriveDB 
 
 macOS ARM64 packages include `vendor/smartmontools/darwin/smartctl`, the DriveDB and required license/source resources; they do **not** include Windows `smartctl.exe`. The bundled ARM64 tool is built with a **macOS 15.0 minimum deployment target** (Mach-O `LC_BUILD_VERSION`, `minos 15.0`; build SDK 27.2). The binary SHA-256 and compiler flags are recorded in `vendor/smartmontools/darwin/README.txt`. Do not lower `minimumSystemVersion` without rebuilding and validating both the bundled binary and Electron runtime. Actual device access on macOS 15 must be tested on a real macOS 15 machine.
 
-After packaging/signing, `smoke:mac` verifies the sealed app and executes bundled `smartctl --version`. For public distribution outside the Mac App Store, use the separate **Developer ID Application** signing/notarization workflow described in [MACOS-RELEASE.md](MACOS-RELEASE.md). It creates an unpublished GitHub Release draft only after signature, Gatekeeper and package checks pass. A local Apple Development signature is not a public distribution signature.
+After packaging/signing, `smoke:mac` verifies the sealed app and executes bundled `smartctl --version`. For public distribution outside the Mac App Store, use the **Developer ID Application** signing/notarization path in the unified [release workflow](MACOS-RELEASE.md). The shared draft is created only after platform builds, package smoke tests, macOS notarization and Gatekeeper checks pass. A local Apple Development signature is not a public distribution signature.
 
 ### Linux
 
@@ -49,6 +49,12 @@ npm run linux:remove-access
 ```
 
 The helper accepts a limited command set and can remain available within an application session after one Polkit authentication. If absent, direct `pkexec` requests can require repeated authorization. Test actual Polkit behavior under GNOME and KDE and verify the helper is removed correctly on package uninstallation.
+
+## Official multi-platform GitHub Release
+
+The manual **DriveNX Release** workflow (`.github/workflows/macos-release.yml`) builds from an existing version tag. Its output is **one unpublished GitHub Release draft** with Windows Setup/Portable EXE (unsigned), notarized macOS DMG/ZIP, Linux AppImage/DEB and `SHA256SUMS.txt`. Signing credentials are used only in the macOS job. All three builds must pass before the release draft is created. Uploads use an internal Actions artifact transfer; the final GitHub Release assets are individual files, not extra ZIP archives.
+
+For the already notarized `v0.1.0` draft, enable **Reuse signed macOS assets** when manually starting the workflow. This verifies the existing macOS DMG and ZIP against their original checksum list and appends only the new Windows and Linux assets. For future versions, leave this option **disabled** so macOS is signed and notarized again. Do not publish any release before testing its Windows and Linux installations. See [MACOS-RELEASE.md](MACOS-RELEASE.md) for the complete procedure.
 
 ## Distributable resources and licensing
 

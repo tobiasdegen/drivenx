@@ -1,6 +1,6 @@
 # Official macOS signing and GitHub release
 
-This procedure distributes **DriveNX for Apple Silicon (ARM64), macOS 15+** outside the Mac App Store. It is separate from `.github/workflows/ci.yml`, which deliberately produces ad-hoc signed test packages. The official workflow is manual and creates only an **unpublished GitHub Release draft**. Publishing that draft is a separate human decision.
+This procedure signs and notarizes **DriveNX for Apple Silicon (ARM64), macOS 15+** outside the Mac App Store. The official GitHub workflow now builds **one unpublished release draft for Windows, macOS and Linux**, separate from `.github/workflows/ci.yml`, which produces only test packages. Publishing the draft is always a separate human decision.
 
 ## Prerequisites
 
@@ -29,19 +29,13 @@ This procedure distributes **DriveNX for Apple Silicon (ARM64), macOS 15+** outs
 
 ## Build and publish (manual)
 
-1. Finish checking the code on all three platforms. The existing `.github/workflows/ci.yml` remains manual and does not get signing credentials.
-2. Update `package.json` version (and `package-lock.json` if needed), commit and push to GitHub. For the current version, the following uses `v0.1.0`:
+1. Test the code on all three operating systems. The manual `.github/workflows/ci.yml` continues to provide unsigned/adhoc test installers and does not use official signing credentials.
+2. Set `package.json` and `package-lock.json` to the new version, commit, then create and push its tag. Do not move an already published tag.
+3. Open GitHub **Actions → DriveNX Release → Run workflow**. Enter an existing tag such as `v0.1.0`. The default **Reuse signed macOS assets** setting is `false`: Windows and Linux are built and smoke-tested, while macOS is signed, notarized and checked with Gatekeeper. Only if **all** jobs pass does the workflow create one unpublished draft with six installers and `SHA256SUMS.txt`.
+4. **For the already prepared `v0.1.0` draft only:** select `reuse_existing_macos: true`. The notarized DMG and ZIP from the successful earlier workflow are downloaded and validated against `SHA256SUMS-macos.txt`; Windows Setup/Portable EXE and Linux DEB/AppImage are newly built from the same tag and added to the **existing draft**. The macOS files are not rebuilt or replaced.
+5. Review all six assets, checksums and release notes. Test the Windows and Linux installers on real target systems before choosing **Publish release**; mark `v0.1.0` as a prerelease. The workflow never publishes automatically.
 
-   ```sh
-   git tag -a v0.1.0 -m "DriveNX v0.1.0"
-   git push origin v0.1.0
-   ```
-
-   Only create this tag if it does not already exist, the working tree is clean and the version really is `0.1.0`. Do not move or replace an already published release tag.
-
-3. In GitHub **Actions → DriveNX macOS Release → Run workflow**, enter the existing tag (`v0.1.0`). The workflow checks out that tag, checks its version, imports the signing identity via `CSC_LINK`, signs and notarizes both ARM64 macOS artifacts, verifies the sealed bundle, verifies Gatekeeper acceptance, and generates SHA-256 checksums.
-4. A successful run creates a **draft release** containing the DMG, ZIP and `SHA256SUMS-macos.txt`. Check the release assets, notes and licensing before choosing **Publish release**. The workflow never publishes automatically.
-5. Test installation from the downloaded DMG on a separate, clean Mac with Gatekeeper enabled. Check start, SMART diagnostics and required authorization. There is no Mac App Store submission in this flow.
+The workflow definition remains at `.github/workflows/macos-release.yml` for compatibility with the existing setup, but its display name is **DriveNX Release** and it handles all three platforms. Windows packages are intentionally **unsigned**, so SmartScreen may warn users. Linux DEB and AppImage are not code-signed. The macOS distributables remain Developer-ID-signed and Apple-notarized.
 
 ## Manual local signing
 

@@ -1,27 +1,33 @@
-name: DriveNX macOS Release
+name: DriveNX Release
 
-# Release credentials are deliberately never used in the ad-hoc test workflow.
+# One unpublished release for Windows, macOS and Linux. The first release can
+# reuse the previously signed and notarized macOS assets from its draft.
 on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Existing Git tag matching package.json (e.g. v0.1.0)'
+        description: 'Existing version tag (e.g. v0.1.0)'
         required: true
         type: string
+      reuse_existing_macos:
+        description: 'Reuse signed macOS assets already in an unpublished release draft'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
 
 concurrency:
-  group: macos-release-${{ inputs.tag }}
+  group: drivenx-release-${{ inputs.tag }}
   cancel-in-progress: false
 
 jobs:
-  notarized-macos:
-    name: Sign, notarize and prepare macOS release
-    runs-on: macos-15
-    permissions:
-      contents: write
+  verify:
+    name: Validate release tag and draft
+    runs-on: ubuntu-22.04
+    outputs:
+      commit_sha: ${{ steps.tag.outputs.commit_sha }}
     steps:
       - name: Checkout existing release tag
         uses: actions/checkout@v5
@@ -29,14 +35,18 @@ jobs:
           ref: ${{ inputs.tag }}
           fetch-depth: 0
 
-      - name: Validate tag and app version
+      - name: Validate tag, version and existing release
+        id: tag
         shell: bash
         env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ inputs.tag }}
+          REUSE_EXISTING_MACOS: ${{ inputs.reuse_existing_macos }}
         run: |
           set -euo pipefail
           if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
-            echo 'Expected a version tag like v0.1.0.' >&2
+            echo 'Expected an existing version tag such as v0.1.0.' >&2
             exit 1
           fi
           git show-ref --verify --quiet "refs/tags/$RELEASE_TAG"
@@ -45,13 +55,104 @@ jobs:
             echo 'The checkout does not match the requested release tag.' >&2
             exit 1
           fi
-          package_version=$(node -p "require('./package.json').version")
-          if [[ "$RELEASE_TAG" != "v$package_version" ]]; then
+          version=$(node -p "require('./package.json').version")
+          if [[ "$RELEASE_TAG" != "v$version" ]]; then
             echo 'The tag and package.json version do not match.' >&2
             exit 1
           fi
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            if [[ "$(gh release view "$RELEASE_TAG" --json isDraft --jq '.isDraft')" != true ]]; then
+              echo 'Refusing to change an already published release.' >&2
+              exit 1
+            fi
+            if [[ "$REUSE_EXISTING_MACOS" != true ]]; then
+              echo 'A release draft already exists. Use reuse_existing_macos only if it contains the verified macOS files.' >&2
+              exit 1
+            fi
+            assets=$(gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name')
+            for name in "DriveNX-$version-arm64.dmg" "DriveNX-$version-arm64-mac.zip" SHA256SUMS-macos.txt; do
+              if ! grep -Fxq "$name" <<< "$assets"; then
+                echo "Required macOS draft asset is missing: $name" >&2
+                exit 1
+              fi
+            done
+          elif [[ "$REUSE_EXISTING_MACOS" == true ]]; then
+            echo 'Cannot reuse macOS assets: release draft does not exist.' >&2
+            exit 1
+          fi
+          echo "commit_sha=$expected_commit" >> "$GITHUB_OUTPUT"
 
-      - name: Validate secret configuration
+  windows:
+    name: Build unsigned Windows packages
+    needs: verify
+    runs-on: windows-2025
+    steps:
+      - name: Checkout existing release tag
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.verify.outputs.commit_sha }}
+      - name: Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Validate, build and smoke-test unsigned Windows packages
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: npm run release:win
+      - name: Stage Windows installers for the release
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-windows
+          path: |
+            release/DriveNX-Setup-*-x64.exe
+            release/DriveNX-Portable-*-x64.exe
+          if-no-files-found: error
+          retention-days: 5
+          compression-level: 0
+
+  linux:
+    name: Build Linux packages
+    needs: verify
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout existing release tag
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.verify.outputs.commit_sha }}
+      - name: Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Validate, build and smoke-test Linux packages
+        run: npm run dist:linux
+      - name: Stage Linux packages for the release
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-linux
+          path: |
+            release/DriveNX-*-linux-*.AppImage
+            release/DriveNX-*-linux-*.deb
+          if-no-files-found: error
+          retention-days: 5
+          compression-level: 0
+
+  macos:
+    name: Sign and notarize macOS packages
+    needs: verify
+    if: ${{ ! inputs.reuse_existing_macos }}
+    runs-on: macos-15
+    steps:
+      - name: Checkout existing release tag
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.verify.outputs.commit_sha }}
+      - name: Validate macOS release secrets
         shell: bash
         env:
           MAC_CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
@@ -66,17 +167,14 @@ jobs:
           : "${APPLE_ID:?Set the APPLE_ID GitHub Actions secret.}"
           : "${APPLE_APP_SPECIFIC_PASSWORD:?Set the APPLE_APP_SPECIFIC_PASSWORD GitHub Actions secret.}"
           : "${APPLE_TEAM_ID:?Set the APPLE_TEAM_ID GitHub Actions secret.}"
-
       - name: Node.js 24
         uses: actions/setup-node@v5
         with:
           node-version: '24'
           cache: npm
-
       - name: Install locked dependencies
         run: npm ci
-
-      - name: Sign, notarize and verify
+      - name: Sign, notarize and verify macOS packages
         shell: bash
         env:
           CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
@@ -85,19 +183,46 @@ jobs:
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: bash scripts/build-mac-release.sh
+      - name: Stage notarized macOS packages for the release
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-macos
+          path: |
+            release/*.dmg
+            release/*.zip
+          if-no-files-found: error
+          retention-days: 5
+          compression-level: 0
 
-      - name: Write SHA-256 checksums
-        shell: bash
-        run: |
-          set -euo pipefail
-          (cd release && shasum -a 256 -- *.dmg *.zip > SHA256SUMS-macos.txt)
-
-      - name: Create unpublished GitHub Release draft
+  draft:
+    name: Assemble one unpublished GitHub Release
+    needs: [verify, windows, linux, macos]
+    if: >-
+      ${{ always() &&
+        needs.verify.result == 'success' &&
+        needs.windows.result == 'success' &&
+        needs.linux.result == 'success' &&
+        (needs.macos.result == 'success' ||
+          (inputs.reuse_existing_macos && needs.macos.result == 'skipped')) }}
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      # The release helper is from the workflow branch; the installers are built
+      # exclusively from the requested immutable version tag.
+      - name: Checkout workflow release helper
+        uses: actions/checkout@v5
+      - name: Download validated platform packages
+        uses: actions/download-artifact@v8
+        with:
+          pattern: release-*
+          merge-multiple: true
+          path: release
+      - name: Create or complete an unpublished release draft
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ inputs.tag }}
-        run: |
-          set -euo pipefail
-          gh release create "$RELEASE_TAG" release/*.dmg release/*.zip release/SHA256SUMS-macos.txt \
-            --draft --verify-tag --title "DriveNX $RELEASE_TAG" --generate-notes
+          REUSE_EXISTING_MACOS: ${{ inputs.reuse_existing_macos }}
+        run: bash scripts/publish-release-draft.sh

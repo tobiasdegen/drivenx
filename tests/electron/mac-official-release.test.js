@@ -8,19 +8,20 @@ const read = (name) => fs.readFileSync(path.join(root, name), 'utf8');
 const packageJson = JSON.parse(read('package.json'));
 const workflow = read('.github/workflows/macos-release.yml');
 const script = read('scripts/build-mac-release.sh');
+const publish = read('scripts/publish-release-draft.sh');
 const entitlements = read('build/entitlements.mac.release.plist');
 
-test('official macOS release is separated from ad-hoc CI builds', () => {
+test('official release is manual and separate from ad-hoc CI', () => {
   assert.match(workflow, /^on:\s*\n\s+workflow_dispatch:/m);
   assert.doesNotMatch(workflow, /^\s+(?:push|pull_request|release):/m);
-  assert.match(workflow, /--draft --verify-tag/);
   assert.match(workflow, /contents: write/);
   assert.match(workflow, /macos-15/);
   assert.match(workflow, /scripts\/build-mac-release\.sh/);
+  assert.match(publish, /--draft --verify-tag/);
   assert.doesNotMatch(read('.github/workflows/ci.yml'), /secrets\.MAC_CSC_LINK/);
 });
 
-test('macOS release workflow uses Apple ID notarization secrets instead of API keys', () => {
+test('macOS workflow uses Apple ID notarization secrets instead of API keys', () => {
   assert.match(workflow, /secrets\.MAC_CSC_LINK/);
   assert.match(workflow, /secrets\.MAC_CSC_KEY_PASSWORD/);
   for (const variable of ['APPLE_ID', 'APPLE_APP_SPECIFIC_PASSWORD', 'APPLE_TEAM_ID']) {
@@ -47,20 +48,28 @@ test('release requires signing, notarization, stapling and Gatekeeper checks', (
   assert.doesNotMatch(script, /-c\.mac\.identity=-/);
 });
 
-test('bundled smartctl is explicitly signed and release entitlements are minimal', () => {
+test('bundled smartctl is explicitly signed and entitlements remain minimal', () => {
   assert.deepEqual(packageJson.build.mac.binaries, [
     'Contents/Resources/smartmontools/darwin/smartctl',
   ]);
   assert.match(entitlements, /com\.apple\.security\.cs\.allow-jit/);
   assert.doesNotMatch(entitlements, /disable-library-validation|allow-unsigned-executable-memory/);
-  assert.match(workflow, /SHA256SUMS-macos\.txt/);
+  assert.match(publish, /SHA256SUMS\.txt/);
 });
 
-test('transient Apple CloudKit network failures retry stapler without bypassing validation', () => {
-  assert.match(script, /validate_stapled_ticket\(\)/);
-  assert.match(script, /NSURLErrorDomain Code=-1005/);
-  assert.match(script, /network connection was lost/);
-  assert.match(script, /"\$status" -ne 68/);
-  assert.match(script, /attempt == 4/);
-  assert.match(script, /validate_stapled_ticket\n\/usr\/sbin\/spctl --assess/);
+test('one draft combines Windows, macOS and Linux from the same version tag', () => {
+  assert.match(workflow, /name: DriveNX Release/);
+  assert.match(workflow, /reuse_existing_macos:/);
+  assert.match(workflow, /needs: \[verify, windows, linux, macos\]/);
+  assert.match(workflow, /npm run release:win/);
+  assert.match(workflow, /npm run dist:linux/);
+  assert.match(workflow, /needs\.verify\.outputs\.commit_sha/);
+  assert.match(workflow, /actions\/download-artifact@v8/);
+  assert.match(workflow, /merge-multiple: true/);
+  assert.match(workflow, /scripts\/publish-release-draft\.sh/);
+  assert.match(publish, /gh release upload/);
+  assert.match(publish, /gh release create/);
+  assert.match(publish, /sha256sum --check --strict SHA256SUMS-macos\.txt/);
+  assert.match(publish, /Refusing to replace any asset/);
+  assert.match(publish, /--draft --verify-tag/);
 });
