@@ -81,7 +81,34 @@ if [[ "$app_team" != "$tool_team" ]]; then
   exit 1
 fi
 
-/usr/bin/xcrun stapler validate "$app"
+# Apple CloudKit occasionally drops ticket lookups on GitHub macOS runners.
+# Retry only a known transient network failure. Never skip ticket validation.
+validate_stapled_ticket() {
+  local attempt=1 status output
+  while (( attempt <= 4 )); do
+    if output=$(/usr/bin/xcrun stapler validate "$app" 2>&1); then
+      printf '%s\n' "$output"
+      return 0
+    else
+      status=$?
+    fi
+
+    printf '%s\n' "$output" >&2
+    if [[ "$status" -ne 68 ]] || { [[ "$output" != *'NSURLErrorDomain Code=-1005'* ]] && [[ "$output" != *'network connection was lost'* ]]; }; then
+      return "$status"
+    fi
+    if (( attempt == 4 )); then
+      echo 'DriveNX: Notarization ticket validation failed after 4 attempts.' >&2
+      return "$status"
+    fi
+
+    echo "DriveNX: Apple CloudKit connection lost; retrying ticket validation ($((attempt + 1))/4)." >&2
+    sleep "$((attempt * 10))"
+    ((attempt += 1))
+  done
+}
+
+validate_stapled_ticket
 /usr/sbin/spctl --assess --type execute --verbose=4 "$app"
 npm run smoke:mac
 

@@ -55,3 +55,12 @@ test('bundled smartctl is explicitly signed and release entitlements are minimal
   assert.doesNotMatch(entitlements, /disable-library-validation|allow-unsigned-executable-memory/);
   assert.match(workflow, /SHA256SUMS-macos\.txt/);
 });
+
+test('transient Apple CloudKit network failures retry stapler without bypassing validation', () => {
+  assert.match(script, /validate_stapled_ticket\(\)/);
+  assert.match(script, /NSURLErrorDomain Code=-1005/);
+  assert.match(script, /network connection was lost/);
+  assert.match(script, /"\$status" -ne 68/);
+  assert.match(script, /attempt == 4/);
+  assert.match(script, /validate_stapled_ticket\n\/usr\/sbin\/spctl --assess/);
+});
