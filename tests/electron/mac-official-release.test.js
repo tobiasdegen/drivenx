@@ -34,6 +34,14 @@ test('macOS workflow uses Apple ID notarization secrets instead of API keys', ()
   assert.doesNotMatch(workflow, /APPLE_API_(?:KEY|KEY_ID|ISSUER)/);
 });
 
+test('draft validation can read unpublished GitHub releases without broadening global access', () => {
+  assert.match(workflow, /^permissions:\n {2}contents: read$/m);
+  assert.match(
+    workflow,
+    /^ {2}verify:\n {4}name: Validate release tag and draft\n {4}runs-on: ubuntu-22\.04\n(?: {4}#[^\n]*\n)? {4}permissions:\n {6}contents: write$/m,
+  );
+});
+
 test('release requires signing, notarization, stapling and Gatekeeper checks', () => {
   assert.match(script, /-c\.mac\.forceCodeSigning=true/);
   assert.match(script, /-c\.mac\.notarize=true/);

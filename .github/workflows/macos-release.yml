@@ -26,6 +26,9 @@ jobs:
   verify:
     name: Validate release tag and draft
     runs-on: ubuntu-22.04
+    # GitHub hides unpublished release drafts from read-only tokens.
+    permissions:
+      contents: write
     outputs:
       commit_sha: ${{ steps.tag.outputs.commit_sha }}
     steps:
