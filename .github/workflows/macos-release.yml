@@ -1,0 +1,103 @@
+name: DriveNX macOS Release
+
+# Release credentials are deliberately never used in the ad-hoc test workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing Git tag matching package.json (e.g. v0.1.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macos-release-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  notarized-macos:
+    name: Sign, notarize and prepare macOS release
+    runs-on: macos-15
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout existing release tag
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+
+      - name: Validate tag and app version
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo 'Expected a version tag like v0.1.0.' >&2
+            exit 1
+          fi
+          git show-ref --verify --quiet "refs/tags/$RELEASE_TAG"
+          expected_commit=$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")
+          if [[ "$expected_commit" != "$(git rev-parse HEAD)" ]]; then
+            echo 'The checkout does not match the requested release tag.' >&2
+            exit 1
+          fi
+          package_version=$(node -p "require('./package.json').version")
+          if [[ "$RELEASE_TAG" != "v$package_version" ]]; then
+            echo 'The tag and package.json version do not match.' >&2
+            exit 1
+          fi
+
+      - name: Validate secret configuration
+        shell: bash
+        env:
+          MAC_CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          MAC_CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -euo pipefail
+          : "${MAC_CSC_LINK:?Set the MAC_CSC_LINK GitHub Actions secret.}"
+          : "${MAC_CSC_KEY_PASSWORD:?Set the MAC_CSC_KEY_PASSWORD GitHub Actions secret.}"
+          : "${APPLE_ID:?Set the APPLE_ID GitHub Actions secret.}"
+          : "${APPLE_APP_SPECIFIC_PASSWORD:?Set the APPLE_APP_SPECIFIC_PASSWORD GitHub Actions secret.}"
+          : "${APPLE_TEAM_ID:?Set the APPLE_TEAM_ID GitHub Actions secret.}"
+
+      - name: Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Sign, notarize and verify
+        shell: bash
+        env:
+          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: bash scripts/build-mac-release.sh
+
+      - name: Write SHA-256 checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd release && shasum -a 256 -- *.dmg *.zip > SHA256SUMS-macos.txt)
+
+      - name: Create unpublished GitHub Release draft
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          gh release create "$RELEASE_TAG" release/*.dmg release/*.zip release/SHA256SUMS-macos.txt \
+            --draft --verify-tag --title "DriveNX $RELEASE_TAG" --generate-notes

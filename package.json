@@ -38,7 +38,8 @@
     "test:unit": "node --test tests/electron/*.test.js",
     "test:ui": "vitest run tests/ui",
     "test:ui:watch": "vitest tests/ui",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "release:mac:signed": "bash scripts/build-mac-release.sh"
   },
   "dependencies": {
     "lucide-react": "1.66.0",
@@ -143,7 +144,10 @@
           "to": "smartmontools/smartmontools-7.5-source.tar.gz"
         }
       ],
-      "minimumSystemVersion": "15.0.0"
+      "minimumSystemVersion": "15.0.0",
+      "binaries": [
+        "Contents/Resources/smartmontools/darwin/smartctl"
+      ]
     },
     "win": {
       "target": [

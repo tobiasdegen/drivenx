@@ -29,7 +29,7 @@ Windows packages include `vendor/smartmontools/win32/smartctl.exe`, the DriveDB 
 
 macOS ARM64 packages include `vendor/smartmontools/darwin/smartctl`, the DriveDB and required license/source resources; they do **not** include Windows `smartctl.exe`. The bundled ARM64 tool is built with a **macOS 15.0 minimum deployment target** (Mach-O `LC_BUILD_VERSION`, `minos 15.0`; build SDK 27.2). The binary SHA-256 and compiler flags are recorded in `vendor/smartmontools/darwin/README.txt`. Do not lower `minimumSystemVersion` without rebuilding and validating both the bundled binary and Electron runtime. Actual device access on macOS 15 must be tested on a real macOS 15 machine.
 
-After packaging/signing, `smoke:mac` verifies the sealed app and executes bundled `smartctl --version`. For standard distribution outside the Mac App Store, configure **Developer ID Application** signing, hardened runtime and notarization, then verify Gatekeeper behavior on a fresh machine. A local Apple Development signature is not a public distribution signature.
+After packaging/signing, `smoke:mac` verifies the sealed app and executes bundled `smartctl --version`. For public distribution outside the Mac App Store, use the separate **Developer ID Application** signing/notarization workflow described in [MACOS-RELEASE.md](MACOS-RELEASE.md). It creates an unpublished GitHub Release draft only after signature, Gatekeeper and package checks pass. A local Apple Development signature is not a public distribution signature.
 
 ### Linux
 
