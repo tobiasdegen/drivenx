@@ -6,7 +6,11 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { checkLinuxPackage, REQUIRED_ASAR } = require('../../scripts/smoke-linux-package.js');
+const {
+  checkLinuxPackage,
+  validateDebDependencies,
+  REQUIRED_ASAR,
+} = require('../../scripts/smoke-linux-package.js');
 const { version: APP_VERSION } = require('../../package.json');
 
 function fixture(testCase) {
@@ -85,6 +89,7 @@ test('DEB installer installs and removes the restricted helper, with dependencie
   const configuration = require('../../package.json').build;
   assert.equal(configuration.deb.afterInstall, 'scripts/linux-deb-after-install.sh');
   assert.equal(configuration.deb.afterRemove, 'scripts/linux-deb-after-remove.sh');
+  assert.ok(!configuration.deb.depends.includes('default'));
   assert.ok(configuration.deb.depends.includes('pkexec'));
   assert.ok(configuration.deb.depends.includes('python3'));
   for (const file of [configuration.deb.afterInstall, configuration.deb.afterRemove]) {
@@ -122,4 +127,21 @@ test('Linux package rejects duplicate bundled React and smartmontools source', (
   const issues = checkLinuxPackage({ root, target: 'dir', asarApi }).join('\n');
   assert.match(issues, /Frontend-Abhängigkeit/);
   assert.match(issues, /smartmontools-7.5-source.tar.gz/);
+});
+
+test('DEB dependency metadata rejects literal default and missing runtime packages', () => {
+  assert.match(
+    validateDebDependencies('default, smartmontools, pkexec, python3').join('\n'),
+    /default/,
+  );
+  assert.deepEqual(
+    validateDebDependencies(
+      'libgtk-3-0t64 | libgtk-3-0, libnotify4, libatspi2.0-0t64 | libatspi2.0-0, smartmontools, pkexec, python3',
+    ),
+    [],
+  );
+  assert.match(
+    validateDebDependencies('libgtk-3-0t64, libatspi2.0-0t64, pkexec, python3').join('\n'),
+    /smartmontools/,
+  );
 });

@@ -230,7 +230,15 @@
     },
     "deb": {
       "depends": [
-        "default",
+        "libgtk-3-0t64 | libgtk-3-0",
+        "libnotify4",
+        "libnss3",
+        "libxss1",
+        "libxtst6",
+        "xdg-utils",
+        "libatspi2.0-0t64 | libatspi2.0-0",
+        "libuuid1",
+        "libsecret-1-0",
         "smartmontools",
         "pkexec",
         "python3"

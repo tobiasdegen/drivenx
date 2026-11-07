@@ -1,6 +1,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
+const { execFileSync } = require('node:child_process');
 
 const REQUIRED_ASAR = [
   'package.json',
@@ -93,6 +94,30 @@ function checkLinuxPackage({
   return issues;
 }
 
+/** Prüft die tatsächlichen DEB-Metadaten, nicht nur die Quelldateien. */
+function validateDebDependencies(depends) {
+  const issues = [];
+  const values = String(depends || '')
+    .split(/\s*,\s*/)
+    .filter(Boolean);
+  const names = values.map((dependency) => dependency.trim());
+  if (names.some((name) => /^default(?:\s|$)/.test(name))) {
+    issues.push('DEB enthält die ungültige Paketabhängigkeit "default".');
+  }
+  for (const required of ['smartmontools', 'pkexec', 'python3']) {
+    if (!names.some((name) => new RegExp(`^${required}(?:\\s|$)`).test(name))) {
+      issues.push(`DEB-Abhängigkeit fehlt: ${required}`);
+    }
+  }
+  if (!names.some((name) => /\blibgtk-3-0(?:t64)?\b/.test(name))) {
+    issues.push('DEB-Abhängigkeit für GTK3 fehlt.');
+  }
+  if (!names.some((name) => /\blibatspi2\.0-0(?:t64)?\b/.test(name))) {
+    issues.push('DEB-Abhängigkeit für AT-SPI fehlt.');
+  }
+  return issues;
+}
+
 async function main() {
   const root = path.resolve(__dirname, '..');
   const args = process.argv.slice(2);
@@ -111,6 +136,22 @@ async function main() {
   }
 
   const issues = checkLinuxPackage({ root, target, asarApi });
+  if (target === 'all' && process.platform === 'linux') {
+    const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
+    const deb = path.join(root, 'release', `DriveNX-${version}-linux-amd64.deb`);
+    if (fs.existsSync(deb)) {
+      try {
+        const depends = execFileSync('dpkg-deb', ['--field', deb, 'Depends'], {
+          encoding: 'utf8',
+          timeout: 15000,
+          maxBuffer: 64 * 1024,
+        });
+        issues.push(...validateDebDependencies(depends));
+      } catch (error) {
+        issues.push(`DEB-Metadaten nicht prüfbar: ${error.message}`);
+      }
+    }
+  }
   for (const issue of issues) console.error('FEHLER: ' + issue);
   if (issues.length) process.exitCode = 1;
   else
@@ -124,4 +165,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkLinuxPackage, REQUIRED_ASAR };
+module.exports = { checkLinuxPackage, validateDebDependencies, REQUIRED_ASAR };
