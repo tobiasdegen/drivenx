@@ -1,6 +1,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
+const os = require('node:os');
 const { execFileSync } = require('node:child_process');
 
 const REQUIRED_ASAR = [
@@ -118,6 +119,40 @@ function validateDebDependencies(depends) {
   return issues;
 }
 
+/** Ensure the DEB ships the profile and its maintainer scripts activate/remove it. */
+function validateDebAppArmor(deb) {
+  const issues = [];
+  const controlDir = fs.mkdtempSync(path.join(os.tmpdir(), 'drivenx-deb-control-'));
+  try {
+    const listing = execFileSync('dpkg-deb', ['--contents', deb], {
+      encoding: 'utf8',
+      timeout: 15000,
+      maxBuffer: 1024 * 1024,
+    });
+    if (
+      !listing.includes('./opt/DriveNX/resources/apparmor-profile') &&
+      !listing.includes('./opt/drivenx/resources/apparmor-profile')
+    ) {
+      issues.push('DEB enthält das AppArmor-Profil nicht.');
+    }
+    execFileSync('dpkg-deb', ['--control', deb, controlDir], { timeout: 15000 });
+    for (const [file, expected] of [
+      ['postinst', 'apparmor_parser --replace'],
+      ['postrm', 'apparmor_parser --remove'],
+    ]) {
+      const script = path.join(controlDir, file);
+      if (!fs.existsSync(script) || !fs.readFileSync(script, 'utf8').includes(expected)) {
+        issues.push(`DEB ${file} installiert/entfernt das AppArmor-Profil nicht.`);
+      }
+    }
+  } catch (error) {
+    issues.push(`DEB-AppArmor-Prüfung fehlgeschlagen: ${error.message}`);
+  } finally {
+    fs.rmSync(controlDir, { recursive: true, force: true });
+  }
+  return issues;
+}
+
 async function main() {
   const root = path.resolve(__dirname, '..');
   const args = process.argv.slice(2);
@@ -147,6 +182,7 @@ async function main() {
           maxBuffer: 64 * 1024,
         });
         issues.push(...validateDebDependencies(depends));
+        issues.push(...validateDebAppArmor(deb));
       } catch (error) {
         issues.push(`DEB-Metadaten nicht prüfbar: ${error.message}`);
       }
@@ -165,4 +201,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkLinuxPackage, validateDebDependencies, REQUIRED_ASAR };
+module.exports = { checkLinuxPackage, validateDebDependencies, validateDebAppArmor, REQUIRED_ASAR };

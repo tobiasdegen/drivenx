@@ -89,6 +89,14 @@ test('DEB installer installs and removes the restricted helper, with dependencie
   const configuration = require('../../package.json').build;
   assert.equal(configuration.deb.afterInstall, 'scripts/linux-deb-after-install.sh');
   assert.equal(configuration.deb.afterRemove, 'scripts/linux-deb-after-remove.sh');
+  assert.equal(configuration.deb.appArmorProfile, 'build/drivenx.apparmor');
+  const profile = fs.readFileSync(path.join(project, configuration.deb.appArmorProfile), 'utf8');
+  assert.match(profile, /profile drivenx \/opt\/DriveNX\/drivenx flags=\(unconfined\)/);
+  assert.match(profile, /\buserns,/);
+  const postinst = fs.readFileSync(path.join(project, configuration.deb.afterInstall), 'utf8');
+  const postrm = fs.readFileSync(path.join(project, configuration.deb.afterRemove), 'utf8');
+  assert.match(postinst, /apparmor_parser --replace/);
+  assert.match(postrm, /apparmor_parser --remove/);
   assert.ok(!configuration.deb.depends.includes('default'));
   assert.ok(configuration.deb.depends.includes('pkexec'));
   assert.ok(configuration.deb.depends.includes('python3'));

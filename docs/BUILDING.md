@@ -9,7 +9,7 @@ npm ci
 npm run release:check
 ```
 
-`release:check` includes tests, contract/backend checks, resource and licensing checks, formatting, linting and the frontend build. `npm run format` **modifies files**; do not use it as a verification command. The CI workflow under `.github/workflows/ci.yml` also builds and smoke-tests unsigned/native target packages on Windows x64, macOS ARM64 and Linux x64. The resulting GitHub Actions artifacts are **test builds**, not public signed releases.
+`release:check` includes tests, contract/backend checks, resource and licensing checks, formatting, linting and the frontend build. `npm run format` **modifies files**; do not use it as a verification command. The CI workflow under `.github/workflows/ci.yml` also builds and smoke-tests unsigned/native target packages on Windows x64, macOS ARM64 and Linux x64. The six resulting GitHub Actions artifacts are individually downloadable files (no extra ZIP wrapping), each retained for five days. They are **test builds**, not public signed releases.
 
 ## Package commands
 
@@ -41,7 +41,7 @@ sudo apt install smartmontools pkexec python3
 
 A graphical Polkit authentication agent must also be available for privileged operations. DriveNX checks for missing system dependencies at startup and offers installation instructions, but never silently installs packages. A Linux app must **not** be launched as root or with `--no-sandbox`.
 
-The preferred privileged access path is the restricted `linux/privileged/drivenx-smartctl-helper`, installed as root-owned system code at `/usr/libexec/drivenx-smartctl-helper` alongside its Polkit policy. The DEB installs and removes these files using package hooks. When developing from trusted sources or using an AppImage, a user may deliberately install/remove the helper:
+The preferred privileged access path is the restricted `linux/privileged/drivenx-smartctl-helper`, installed as root-owned system code at `/usr/libexec/drivenx-smartctl-helper` alongside its Polkit policy. The DEB installs and removes these files using package hooks. On Ubuntu 24.04+ it also installs `build/drivenx.apparmor` as `/etc/apparmor.d/drivenx` and loads the profile for Chromium user namespaces, keeping Electron's sandbox enabled. Older systems without a compatible AppArmor profile parser are skipped. The AppImage cannot install a system AppArmor profile by itself; on systems that restrict unprivileged user namespaces, a suitable local profile must be configured by an administrator. When developing from trusted sources or using an AppImage, a user may deliberately install/remove the helper:
 
 ```sh
 npm run linux:setup-access
@@ -63,8 +63,8 @@ Signing credentials must not be committed to the repository. Publishing official
 
 ## CI verification and platform requirements
 
-`validate` runs the complete `release:check` on Windows, macOS ARM64 and Linux. The production-only npm security audit (`npm audit --omit=dev`) is part of that release check; the full development dependency audit remains a separate review because upstream tooling currently has known advisories.
+The workflow `.github/workflows/ci.yml` is triggered **manually** (`workflow_dispatch`), not on every push or pull request. Its three native matrix jobs each execute `release:check`, build their OS packages and run package smoke tests. macOS CI explicitly disables local certificate discovery; it is not a distribution signing or notarization workflow. Every package needs manual runtime tests on real storage devices and a supported target OS before publication.
 
-`package` runs after all validation jobs succeed, on native runners, and verifies the NSIS/Portable, DMG/ZIP and AppImage/DEB outputs with their dedicated smoke tests. macOS CI explicitly disables local certificate discovery; it is not a distribution signing or notarization workflow. Every package needs manual runtime tests on real storage devices and a supported target OS before publication.
+`actions/upload-artifact@v7` uploads **one file per step** using `archive: false`: two Windows EXE files, a macOS DMG and ZIP, and a Linux AppImage and DEB. Each file can be downloaded directly from the workflow run without an additional ZIP container; artifacts expire after five days.
 
 **Critical:** the repo must contain the macOS 15 ARM64 `vendor/smartmontools/darwin/smartctl` that matches the pinned SHA-256 in `electron/platform/bundled-smartctl.js` (and must preserve executable permissions in Git). A macOS build built locally from the source archive is not automatically present in a GitHub checkout. CI intentionally fails until the vetted binary is committed.

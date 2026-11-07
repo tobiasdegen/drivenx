@@ -47,4 +47,4 @@ Before publishing binaries, verify each final artifact, its SHA-256 checksum, th
 
 ## CI package checks
 
-On every push / pull request, GitHub Actions tests native package creation and smoke checks for Windows x64, macOS 15+ ARM64 and Linux x64 after the platform validation matrix. CI build artifacts are not Developer ID signed or notarized and must not be published without real device/installation tests.
+The manually triggered GitHub Actions workflow runs native package creation and smoke checks for Windows x64, macOS 15+ ARM64 and Linux x64. All six resulting packages are separate direct-download artifacts (five-day retention); CI artifacts are not public signed releases. For Linux DEB packages, the smoke test verifies that the built DEB contains the AppArmor profile and that its maintainer scripts load and remove it. Test installing and running the DEB without `--no-sandbox` on Ubuntu 24.04+; test AppImage behavior separately.

@@ -22,21 +22,12 @@ jobs:
           - name: windows-x64
             os: windows-2025
             command: npm run release:win
-            artifacts: |
-              release/DriveNX-Setup-*-x64.exe
-              release/DriveNX-Portable-*-x64.exe
           - name: macos-arm64
             os: macos-15
             command: bash scripts/build-mac-ci.sh
-            artifacts: |
-              release/*.dmg
-              release/*.zip
           - name: linux-x64
             os: ubuntu-22.04
             command: npm run dist:linux
-            artifacts: |
-              release/*-linux-*.AppImage
-              release/*-linux-*.deb
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -53,10 +44,53 @@ jobs:
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
         run: ${{ matrix.command }}
-      - name: Upload test artifacts
-        uses: actions/upload-artifact@v6
+      # archive: false unterstützt pro Upload nur genau eine Datei.
+      # Die Namen der Dateien werden automatisch als Artefaktnamen verwendet.
+      - name: Upload Windows installer
+        if: matrix.name == 'windows-x64'
+        uses: actions/upload-artifact@v7
         with:
-          name: drivenx-${{ matrix.name }}
-          path: ${{ matrix.artifacts }}
+          path: release/DriveNX-Setup-*-x64.exe
+          archive: false
+          if-no-files-found: error
+          retention-days: 5
+      - name: Upload Windows portable
+        if: matrix.name == 'windows-x64'
+        uses: actions/upload-artifact@v7
+        with:
+          path: release/DriveNX-Portable-*-x64.exe
+          archive: false
+          if-no-files-found: error
+          retention-days: 5
+      - name: Upload macOS DMG
+        if: matrix.name == 'macos-arm64'
+        uses: actions/upload-artifact@v7
+        with:
+          path: release/*.dmg
+          archive: false
+          if-no-files-found: error
+          retention-days: 5
+      - name: Upload macOS ZIP
+        if: matrix.name == 'macos-arm64'
+        uses: actions/upload-artifact@v7
+        with:
+          path: release/*.zip
+          archive: false
+          if-no-files-found: error
+          retention-days: 5
+      - name: Upload Linux AppImage
+        if: matrix.name == 'linux-x64'
+        uses: actions/upload-artifact@v7
+        with:
+          path: release/*-linux-*.AppImage
+          archive: false
+          if-no-files-found: error
+          retention-days: 5
+      - name: Upload Linux DEB
+        if: matrix.name == 'linux-x64'
+        uses: actions/upload-artifact@v7
+        with:
+          path: release/*-linux-*.deb
+          archive: false
           if-no-files-found: error
           retention-days: 5

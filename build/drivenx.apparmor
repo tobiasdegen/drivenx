@@ -1,0 +1,7 @@
+# DriveNX: allow Chromium/Electron to create user namespaces on Ubuntu 24+.
+# This profile does not disable Electron's own sandbox.
+abi <abi/4.0>,
+
+profile drivenx /opt/DriveNX/drivenx flags=(unconfined) {
+    userns,
+}

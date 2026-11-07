@@ -243,6 +243,7 @@
         "pkexec",
         "python3"
       ],
+      "appArmorProfile": "build/drivenx.apparmor",
       "afterInstall": "scripts/linux-deb-after-install.sh",
       "afterRemove": "scripts/linux-deb-after-remove.sh"
     },
